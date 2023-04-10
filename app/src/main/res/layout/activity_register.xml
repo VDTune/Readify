@@ -44,18 +44,18 @@
 
 
     </RelativeLayout>
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="225dp">
-        
+        android:layout_marginTop="225dp"
+        android:layout_marginEnd="40dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-<!--            ten-->
+            <!--            ten-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameTil"
                 android:layout_width="match_parent"
@@ -63,20 +63,20 @@
                 app:hintEnabled="false">
 
                 <EditText
+                    android:id="@+id/nameEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/nameEt"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_person_add_gray"
                     android:drawablePadding="10dp"
                     android:hint="Tên người dùng"
-                    android:textColorHint="@color/gray01"
-                    android:textColor="@color/black"
+                    android:inputType="textPersonName|textCapWords"
                     android:padding="10dp"
-                    android:inputType="textPersonName|textCapWords"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray01" />
             </com.google.android.material.textfield.TextInputLayout>
 
-<!--            email-->
+            <!--            email-->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/emailTil"
                 android:layout_width="match_parent"
@@ -86,17 +86,17 @@
                 app:hintEnabled="false">
 
                 <EditText
+                    android:id="@+id/emailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/emailEt"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_email_gray"
                     android:drawablePadding="10dp"
                     android:hint="Email"
-                    android:textColorHint="@color/gray01"
-                    android:textColor="@color/black"
+                    android:inputType="textEmailAddress"
                     android:padding="10dp"
-                    android:inputType="textEmailAddress"/>
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray01" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!--            pass-->
@@ -147,7 +147,7 @@
                     android:textColorHint="@color/gray01" />
             </com.google.android.material.textfield.TextInputLayout>
 
-<!--            btn đăng kí-->
+            <!--            btn đăng kí-->
             <Button
                 android:id="@+id/registerBtn"
                 android:layout_width="match_parent"
@@ -156,11 +156,11 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_button01"
                 android:text="Đăng Kí"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
 
 
         </RelativeLayout>
-        
+
     </ScrollView>
 
 </RelativeLayout>

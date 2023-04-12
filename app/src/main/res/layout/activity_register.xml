@@ -110,7 +110,7 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/passwprdEt"
+                    android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext01"
@@ -134,7 +134,7 @@
                 app:passwordToggleEnabled="true">
 
                 <EditText
-                    android:id="@+id/cPasswprdEt"
+                    android:id="@+id/cPasswordEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_edittext01"

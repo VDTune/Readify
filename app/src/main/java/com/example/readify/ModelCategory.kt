@@ -3,10 +3,10 @@ package com.example.readify
 class ModelCategory {
 
     //các biến phải khớp trong firebase
-    var id:String = ""
-    var category:String = ""
+    var id: String = ""
+    var category: String = ""
     var timestamp: Long = 0
-    var uid:String = ""
+    var uid: String = ""
 
     constructor()
     constructor(id: String, category: String, timestamp: Long, uid: String) {

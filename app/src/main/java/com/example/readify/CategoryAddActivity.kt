@@ -1,6 +1,7 @@
 package com.example.readify
 
 import android.app.ProgressDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -78,7 +79,9 @@ class CategoryAddActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 //Thêm thể loại thành công
                 progressDialog.dismiss()
-                Toast.makeText(this,"Thêm thành công!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Thêm thể loại ${category} thành công!",Toast.LENGTH_SHORT).show()
+                binding.categoryEt.setText("")
+//                startActivity(Intent(this,DashboardAdminActivity::class.java))
             }
             .addOnFailureListener {e ->
                 //thêm thất bại

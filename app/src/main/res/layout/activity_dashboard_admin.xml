@@ -44,4 +44,41 @@
             android:src="@drawable/ic_logout_white" />
     </RelativeLayout>
 
+    <!--Bottom Layout-->
+    <LinearLayout
+        android:id="@+id/bottomLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp">
+
+        <!--thêm thể loại-->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addCategoryBtn"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button01"
+            android:minHeight="50dp"
+            android:text="+ Thêm thể loại"
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
+
+        <!--Thêm file pdf-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addPdfFab"
+            android:backgroundTint="@color/purple_500"
+            app:fabCustomSize="50dp"
+            android:src="@drawable/ic_pdf_white"
+            app:tint="@color/white"/>
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>

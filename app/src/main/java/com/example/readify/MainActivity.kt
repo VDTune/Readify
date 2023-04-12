@@ -14,13 +14,12 @@ class MainActivity : AppCompatActivity() {
 
         //xử lí sự kiện nút login
         binding.loginBtn.setOnClickListener {
-            startActivity(Intent(this,LoginActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
         }
         //xử lí sự kiện nút skip
         binding.skipBtn.setOnClickListener {
-            startActivity(Intent(this,DashboardUserActivity::class.java))
+            startActivity(Intent(this, DashboardUserActivity::class.java))
         }
-
 
     }
 }

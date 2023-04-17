@@ -17,6 +17,9 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".PdfAddActivity"
+            android:exported="false" />
+        <activity
             android:name=".CategoryAddActivity"
             android:exported="false" />
         <activity

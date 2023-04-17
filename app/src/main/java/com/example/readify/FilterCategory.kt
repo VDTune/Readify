@@ -1,7 +1,6 @@
 package com.example.readify
 
 import android.widget.Filter
-import java.security.AlgorithmConstraints
 
 
 class FilterCategory : Filter {
@@ -10,7 +9,7 @@ class FilterCategory : Filter {
     private var adapterCategory: AdapterCategory
 
     //constructor
-    constructor(filterList: ArrayList<ModelCategory>, adapterCategory: AdapterCategory) {
+    constructor(filterList: ArrayList<ModelCategory>, adapterCategory: AdapterCategory):super() {
         this.filterList = filterList
         this.adapterCategory = adapterCategory
     }
@@ -20,7 +19,7 @@ class FilterCategory : Filter {
         val results = FilterResults()
 
         //kiểm tra giá trị có null hoặc rỗng hay không
-        if (constraint != null && constraint.isEmpty()) {
+        if (constraint != null && constraint.isNotEmpty()) {
             /*điều kiện tìm kiếm khi khác null và rỗng*/
             //set uppercase để tránh phân biệt chữ hoa chứx thường
             constraint = constraint.toString().uppercase()

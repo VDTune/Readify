@@ -15,6 +15,4 @@ class ModelCategory {
         this.timestamp = timestamp
         this.uid = uid
     }
-
-
 }

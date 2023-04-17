@@ -66,7 +66,6 @@ class CategoryAddActivity : AppCompatActivity() {
 
         //set up dữ liệu để đẩy vào firebase
         val hashMap = HashMap<String,Any>()
-
         hashMap["id"] = "$timestamp"
         hashMap["category"] = category
         hashMap["timestamp"] = timestamp

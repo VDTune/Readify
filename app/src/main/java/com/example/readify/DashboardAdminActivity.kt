@@ -17,6 +17,7 @@ class DashboardAdminActivity : AppCompatActivity() {
 
     private lateinit var firebaseAuth: FirebaseAuth
 
+    //arraylist để chứa thể loại
     private lateinit var categoryArrayList: ArrayList<ModelCategory>
 
     //adapter
@@ -32,7 +33,7 @@ class DashboardAdminActivity : AppCompatActivity() {
         loadCategory()
 
         //tìm
-        binding.searchEdt.addTextChangedListener(object : TextWatcher {
+        binding.searchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -46,7 +47,7 @@ class DashboardAdminActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                TODO("Not yet implemented")
+
             }
         })
 
@@ -60,6 +61,11 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding.addCategoryBtn.setOnClickListener {
             startActivity(Intent(this, CategoryAddActivity::class.java))
         }
+
+        //Xử lí nút thêm file pdf
+        binding.addPdfFab.setOnClickListener {
+            startActivity(Intent(this, PdfAddActivity::class.java))
+        }
     }
 
     private fun loadCategory() {
@@ -69,9 +75,6 @@ class DashboardAdminActivity : AppCompatActivity() {
         //lấy tất cả thể loại từ firebase
         val ref = FirebaseDatabase.getInstance().getReference("Category")
         ref.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-
-            }
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 //clear list trước khi thêm dữ liệu
@@ -86,7 +89,10 @@ class DashboardAdminActivity : AppCompatActivity() {
                 //setup adapter
                 adapterCategory = AdapterCategory(this@DashboardAdminActivity, categoryArrayList)
 
-                binding.category.adapter = adapterCategory
+                binding.categoryRv.adapter = adapterCategory
+            }
+            override fun onCancelled(error: DatabaseError) {
+
             }
         })
     }

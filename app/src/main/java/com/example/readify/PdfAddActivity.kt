@@ -162,7 +162,7 @@ class PdfAddActivity : AppCompatActivity() {
         hashMap["uid"] = "$uid"
         hashMap["id"] = "$timestamp"
         hashMap["title"] = "$title"
-        hashMap["desv"] = "$desc"
+        hashMap["desc"] = "$desc"
         hashMap["categoryId"] = "$selectedCategoryId"
         hashMap["url"] = "$uploadedPdfUrl"
         hashMap["timestamp"] = timestamp

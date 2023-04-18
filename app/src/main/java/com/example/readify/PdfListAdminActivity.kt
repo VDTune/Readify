@@ -15,7 +15,7 @@ class PdfListAdminActivity : AppCompatActivity() {
     //binding
     private lateinit var binding: ActivityPdfListAdminBinding
 
-    private companion object{
+    private companion object {
         const val TAG = "PDF_LIST_ADMIN_TAG"
     }
 
@@ -46,16 +46,16 @@ class PdfListAdminActivity : AppCompatActivity() {
         loadPdfList()
 
         //tim kiem
-        binding.searchEt.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.searchEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 try {
-                    adapterPdfAdmin.filter!!.filter(s)
-                }catch (e: Exception){
-                    Log.d(TAG, "onTextChanged: ${e.message}")
+                    adapterPdfAdmin.filter?.filter(s)
+                } catch (e: Exception) {
+
                 }
             }
 
@@ -63,6 +63,11 @@ class PdfListAdminActivity : AppCompatActivity() {
 
             }
         })
+
+        //xử lý nút back
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
 
     }
 
@@ -72,11 +77,11 @@ class PdfListAdminActivity : AppCompatActivity() {
 
         val ref = FirebaseDatabase.getInstance().getReference("Book")
         ref.orderByChild("categoryId").equalTo(categoryId)
-            .addValueEventListener(object: ValueEventListener{
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     //clear danh sach truoc khi them vao
                     pdfArrayList.clear()
-                    for(ds in snapshot.children){
+                    for (ds in snapshot.children) {
                         //Lấy dữ liệu nè
                         val model = ds.getValue(ModelPdf::class.java)
 
@@ -89,7 +94,7 @@ class PdfListAdminActivity : AppCompatActivity() {
                     }
 
                     //setup adapter
-                    adapterPdfAdmin = AdapterPdfAdmin(this@PdfListAdminActivity,pdfArrayList)
+                    adapterPdfAdmin = AdapterPdfAdmin(this@PdfListAdminActivity, pdfArrayList)
                     binding.bookRv.adapter = adapterPdfAdmin
                 }
 

@@ -40,7 +40,7 @@ class DashboardAdminActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 try {
-                    adapterCategory.filter.filter(s)
+                    adapterCategory.filter?.filter(s)
                 } catch (e: Exception) {
 
                 }
@@ -91,6 +91,7 @@ class DashboardAdminActivity : AppCompatActivity() {
 
                 binding.categoryRv.adapter = adapterCategory
             }
+
             override fun onCancelled(error: DatabaseError) {
 
             }

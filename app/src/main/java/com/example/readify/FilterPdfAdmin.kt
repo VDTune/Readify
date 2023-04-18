@@ -21,12 +21,12 @@ class FilterPdfAdmin : Filter {
         //các giá trị tìm kiếm không được null và rỗng
         if(constraint !=null && constraint.isNotEmpty()){
             // chuyển thành lowercase để tránh phân biệt chữ hoa chứ thường
-            constraint = constraint.toString().lowercase()
+            constraint = constraint.toString().uppercase()
             val filteredModel = ArrayList<ModelPdf>()
 
             for(i in filterList.indices){
                 //xác thực nếu gía trị khớp
-                if(filterList[i].title.lowercase().contains(constraint)){
+                if(filterList[i].title.uppercase().contains(constraint)){
                     //giá trị tìm tương tự với các gía trị trong list
                     filteredModel.add(filterList[i])
                 }

@@ -61,7 +61,7 @@
         android:drawablePadding="10dp"
         android:hint="Tìm sách..."
         android:padding="10dp"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <!--list sách pdf-->
     <androidx.recyclerview.widget.RecyclerView

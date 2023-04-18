@@ -24,6 +24,7 @@ class FilterCategory : Filter {
             //set uppercase để tránh phân biệt chữ hoa chứx thường
             constraint = constraint.toString().uppercase()
             val filteredModel: ArrayList<ModelCategory> = ArrayList()
+
             for (i in 0 until filterList.size) {
                 if (filterList[i].category.uppercase().contains(constraint)) {
                     filteredModel.add(filterList[i])

@@ -9,20 +9,20 @@ class FilterPdfAdmin : Filter {
     var adapterPdfAdmin: AdapterPdfAdmin
 
     //constructor
-    constructor(filterList: ArrayList<ModelPdf>, adapterPdfAdmin: AdapterPdfAdmin) {
+    constructor(filterList: ArrayList<ModelPdf>, adapterPdfAdmin: AdapterPdfAdmin):super() {
         this.filterList = filterList
         this.adapterPdfAdmin = adapterPdfAdmin
     }
 
     override fun performFiltering(constraint: CharSequence?): FilterResults {
-        var constraint : CharSequence? = constraint //gia tri tim kiem
+        var constraint = constraint //gia tri tim kiem
         val results = FilterResults()
 
         //các giá trị tìm kiếm không được null và rỗng
         if(constraint !=null && constraint.isNotEmpty()){
             // chuyển thành lowercase để tránh phân biệt chữ hoa chứ thường
             constraint = constraint.toString().uppercase()
-            val filteredModel = ArrayList<ModelPdf>()
+            val filteredModel: ArrayList<ModelPdf> = ArrayList()
 
             for(i in filterList.indices){
                 //xác thực nếu gía trị khớp

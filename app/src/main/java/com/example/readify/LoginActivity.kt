@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 //đăng nhập thất bại
                 progressDialog.dismiss()
-                Toast.makeText(this, "Đăng nhập thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "Email hoặc Mật khẩu không đúng", Toast.LENGTH_SHORT)
                     .show()
             }
     }
@@ -138,7 +138,7 @@ class LoginActivity : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+
                 }
             })
     }

@@ -1,6 +1,8 @@
 package com.example.readify
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +23,7 @@ class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filt
     private lateinit var binding:RowPdfAdminBinding
 
     //filter object
-    var filter: FilterPdfAdmin? = null
+    private var filter: FilterPdfAdmin? = null
 
     //constructor
     constructor(context: Context, pdfArrayList: ArrayList<ModelPdf>) : super() {
@@ -65,8 +67,43 @@ class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filt
 
         //lấy size pdf nè
         MyApplication.loadPdfSize(pdfUrl,title, holder.sizeTv)
+
+        //xử lí sự kiện click: xóa sách và edit sách
+        holder.moreBtn.setOnClickListener {
+            moreOptionDialog(model, holder)
+        }
+        //xử lí click hiển thị PdfDetailActivity
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, PdfDetailActivity::class.java)
+            intent.putExtra("bookId", pdfId)
+            context.startActivity(intent)
+        }
     }
 
+    private fun moreOptionDialog(model: ModelPdf, holder: AdapterPdfAdmin.HolderPdfAdmin) {
+        //lấy tên, id , url của sách
+        val bookId = model.id
+        val bookUrl = model.url
+        val bookTitle = model.title
+
+        val options = arrayOf("Sửa", "Xóa")
+
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Tùy chọn")
+            .setItems(options){dialog, position ->
+                if(position == 0){
+                    //sửa
+                    val intent = Intent(context,PdfEditActivity::class.java)
+                    intent.putExtra("bookId", bookId)
+                    context.startActivity(intent)
+                }
+                else if(position == 1){
+                    //xóa (tạo hàm trong lớp MyApplication
+                    MyApplication.deleteBook(context,bookId, bookUrl, bookTitle)
+                }
+            }
+            .show()
+    }
 
 
     override fun getFilter(): Filter {

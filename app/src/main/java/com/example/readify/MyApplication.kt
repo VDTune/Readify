@@ -1,11 +1,14 @@
 package com.example.readify
 
 import android.app.Application
+import android.app.ProgressDialog
+import android.content.Context
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -14,13 +17,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 
 import java.util.*
+import kotlin.collections.HashMap
 
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
     }
 
+    //tạo các phương thức tĩnh để tái sử dụng
     companion object {
+
         fun formatTimestamp(timestamp: Long): String {
             val cal = Calendar.getInstance(Locale.ENGLISH)
             cal.timeInMillis = timestamp
@@ -117,6 +123,79 @@ class MyApplication : Application() {
                     }
                 })
 
+        }
+
+        fun deleteBook(context: Context, bookId:String, bookUrl: String, bookTitle: String){
+            /*  - context: được sử dụng khi yêu cầu vd: progressDialog/Toast
+            *   - bookId: để xóa sách ở csdl
+            *   - bookUrl: xóa sách ở firebase Storage
+            *   - bookTitle: dùng hiển thị ở hộp thoại*/
+
+            val TAG = "DELETE_BOOK_TAG"
+            Log.d(TAG, "deleteBook:  Đang xóa...")
+
+            //hộp thoại tiến trình
+            val progressDialog = ProgressDialog(context)
+            progressDialog.setTitle("Chỉ một lát")
+            progressDialog.setMessage("Xóa sách: $bookTitle...")
+            progressDialog.setCanceledOnTouchOutside(false)
+            progressDialog.show()
+
+            Log.d(TAG, "deleteBook: Xóa từ Storage...")
+            val storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl)
+            storageReference.delete()
+                .addOnSuccessListener {
+                    Log.d(TAG, "deleteBook: Xóa ở Storage thành công")
+                    Log.d(TAG, "deleteBook: Đang xóa ở db...")
+
+                    val ref = FirebaseDatabase.getInstance().getReference("Book")
+                    ref.child(bookId)
+                        .removeValue()
+                        .addOnSuccessListener {
+                            progressDialog.dismiss()
+                            Toast.makeText(context,"Xóa thành công!",Toast.LENGTH_SHORT).show()
+                            Log.d(TAG, "deleteBook: Xóa dữ liệu từ db thành côcng")
+                        }
+                        .addOnFailureListener {e ->
+                            progressDialog.dismiss()
+                            Log.d(TAG, "deleteBook: Xóa thất bại... Lỗi ${e.message}")
+                            Toast.makeText(context,"Xóa thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                        }
+                }
+                .addOnFailureListener {e ->
+                    progressDialog.dismiss()
+                    Log.d(TAG, "deleteBook: Xóa dữ liệu từ Storage thất bại... Lỗi ${e.message}")
+                    Toast.makeText(context,"Xóa dữ liệu từ Storage thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                }
+
+        }
+
+        fun incrementBookViewCount(bookId: String){
+            val ref = FirebaseDatabase.getInstance().getReference("Book")
+            ref.child(bookId)
+                .addListenerForSingleValueEvent(object: ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        var viewsCount = "${snapshot.child(" viewCount ").value}"
+
+                        if(viewsCount=="" || viewsCount=="null"){
+                            viewsCount = "0"
+                        }
+
+                        val newViewCount = viewsCount.toLong() + 1
+
+                        //setup data
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["viewCount"] =  newViewCount
+
+                        val dbRef = FirebaseDatabase.getInstance().getReference("Book")
+                        dbRef.child(bookId)
+                            .updateChildren(hashMap)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
         }
     }
 

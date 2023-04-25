@@ -57,7 +57,7 @@
         android:drawableStart="@drawable/ic_category_search_gray"
         android:hint="Tìm thể loại..."
         android:padding="10dp"
-        android:textColor="@color/gray01" />
+        android:textColor="@color/black" />
 
     <!--Thể loại-->
     <androidx.recyclerview.widget.RecyclerView

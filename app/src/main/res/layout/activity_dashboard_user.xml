@@ -43,6 +43,25 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_logout_white" />
     </RelativeLayout>
+    
+    <!--Tabs: show thể loại sách-->
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabLayout"
+        android:background="@android:color/transparent"
+        android:layout_margin="5dp"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="0dp"
+        app:tabBackground="@drawable/tab_selector"
+        android:layout_below="@id/toolbarRl"
+        app:tabMode="scrollable"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewPager"
+        android:layout_below="@+id/tabLayout"/>
 
 
 </RelativeLayout>

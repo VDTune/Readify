@@ -48,10 +48,9 @@ class CategoryAddActivity : AppCompatActivity() {
 
 
         //xác nhận data
-        if(category.isEmpty()){
-            Toast.makeText(this,"Vui lòng nhập Thể Loại...",Toast.LENGTH_SHORT).show()
-        }
-        else{
+        if (category.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập Thể Loại...", Toast.LENGTH_SHORT).show()
+        } else {
             addCategoryFirebase()
         }
 
@@ -65,7 +64,7 @@ class CategoryAddActivity : AppCompatActivity() {
         val timestamp = System.currentTimeMillis()
 
         //set up dữ liệu để đẩy vào firebase
-        val hashMap = HashMap<String,Any>()
+        val hashMap = HashMap<String, Any>()
         hashMap["id"] = "$timestamp"
         hashMap["category"] = category
         hashMap["timestamp"] = timestamp
@@ -78,14 +77,16 @@ class CategoryAddActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 //Thêm thể loại thành công
                 progressDialog.dismiss()
-                Toast.makeText(this,"Thêm thể loại ${category} thành công!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Thêm thể loại ${category} thành công!", Toast.LENGTH_SHORT)
+                    .show()
                 binding.categoryEt.setText("")
 //                startActivity(Intent(this,DashboardAdminActivity::class.java))
             }
-            .addOnFailureListener {e ->
+            .addOnFailureListener { e ->
                 //thêm thất bại
                 progressDialog.dismiss()
-                Toast.makeText(this,"Thêm thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Thêm thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
 
             }
 

@@ -25,7 +25,9 @@ class MyApplication : Application() {
     }
 
     //tạo các phương thức tĩnh để tái sử dụng
+
     companion object {
+
 
         fun formatTimestamp(timestamp: Long): String {
             val cal = Calendar.getInstance(Locale.ENGLISH)
@@ -66,7 +68,7 @@ class MyApplication : Application() {
             pdfView: PDFView,
             progressBar: ProgressBar,
             pageTv: TextView?
-        ){
+        ) {
 
             val TAG = "PDF_THUMBNAIL_TAG"
             val ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl)
@@ -81,7 +83,7 @@ class MyApplication : Application() {
                         .spacing(0)
                         .swipeHorizontal(false)
                         .enableSwipe(false)
-                        .onError {t->
+                        .onError { t ->
                             progressBar.visibility = View.INVISIBLE
                             Log.d(TAG, "loadPdfFromUrlSinglePage: ${t.message}")
                         }
@@ -93,7 +95,7 @@ class MyApplication : Application() {
                             Log.d(TAG, "loadPdfFromUrlSinglePage: Pages: $nbPages")
                             progressBar.visibility = View.INVISIBLE
 
-                            if(pageTv !=null){
+                            if (pageTv != null) {
                                 pageTv.text = "$nbPages"
                             }
                         }
@@ -105,7 +107,7 @@ class MyApplication : Application() {
         }
 
 
-        fun loadCategory(categoryId: String, categoryTv: TextView){
+        fun loadCategory(categoryId: String, categoryTv: TextView) {
 
             val ref = FirebaseDatabase.getInstance().getReference("Category")
             ref.child(categoryId)
@@ -115,7 +117,7 @@ class MyApplication : Application() {
                         val category = "${snapshot.child("category").value}"
 
                         //set the loai
-                        categoryTv.text =category
+                        categoryTv.text = category
                     }
 
                     override fun onCancelled(error: DatabaseError) {
@@ -125,7 +127,7 @@ class MyApplication : Application() {
 
         }
 
-        fun deleteBook(context: Context, bookId:String, bookUrl: String, bookTitle: String){
+        fun deleteBook(context: Context, bookId: String, bookUrl: String, bookTitle: String) {
             /*  - context: được sử dụng khi yêu cầu vd: progressDialog/Toast
             *   - bookId: để xóa sách ở csdl
             *   - bookUrl: xóa sách ở firebase Storage
@@ -153,39 +155,48 @@ class MyApplication : Application() {
                         .removeValue()
                         .addOnSuccessListener {
                             progressDialog.dismiss()
-                            Toast.makeText(context,"Xóa thành công!",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Xóa thành công!", Toast.LENGTH_SHORT).show()
                             Log.d(TAG, "deleteBook: Xóa dữ liệu từ db thành côcng")
                         }
-                        .addOnFailureListener {e ->
+                        .addOnFailureListener { e ->
                             progressDialog.dismiss()
                             Log.d(TAG, "deleteBook: Xóa thất bại... Lỗi ${e.message}")
-                            Toast.makeText(context,"Xóa thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context,
+                                "Xóa thất bại... Lỗi: ${e.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                 }
-                .addOnFailureListener {e ->
+                .addOnFailureListener { e ->
                     progressDialog.dismiss()
                     Log.d(TAG, "deleteBook: Xóa dữ liệu từ Storage thất bại... Lỗi ${e.message}")
-                    Toast.makeText(context,"Xóa dữ liệu từ Storage thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Xóa dữ liệu từ Storage thất bại... Lỗi: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
         }
 
-        fun incrementBookViewCount(bookId: String){
+        fun incrementBookViewCount(bookId: String) {
             val ref = FirebaseDatabase.getInstance().getReference("Book")
             ref.child(bookId)
-                .addListenerForSingleValueEvent(object: ValueEventListener{
+                .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        var viewsCount = "${snapshot.child(" viewCount ").value}"
+                        var viewsCount = "${snapshot.child("viewCount").value}"
 
-                        if(viewsCount=="" || viewsCount=="null"){
+                        if (viewsCount == "" || viewsCount == "null") {
                             viewsCount = "0"
                         }
 
-                        val newViewCount = viewsCount.toLong() + 1
+                        val newViewCount: Long = viewsCount.toLong() + 1
+
 
                         //setup data
                         val hashMap = HashMap<String, Any>()
-                        hashMap["viewCount"] =  newViewCount
+                        hashMap["viewCount"] = newViewCount
 
                         val dbRef = FirebaseDatabase.getInstance().getReference("Book")
                         dbRef.child(bookId)

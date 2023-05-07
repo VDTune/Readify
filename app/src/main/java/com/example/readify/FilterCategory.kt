@@ -9,7 +9,7 @@ class FilterCategory : Filter {
     private var adapterCategory: AdapterCategory
 
     //constructor
-    constructor(filterList: ArrayList<ModelCategory>, adapterCategory: AdapterCategory):super() {
+    constructor(filterList: ArrayList<ModelCategory>, adapterCategory: AdapterCategory) : super() {
         this.filterList = filterList
         this.adapterCategory = adapterCategory
     }

@@ -11,16 +11,16 @@ import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readify.databinding.RowPdfAdminBinding
 
-class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filterable {
+class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filterable {
 
-    private var context:Context
+    private var context: Context
 
     //array list để chứa file pdf
     public var pdfArrayList: ArrayList<ModelPdf>
     private val filterList: ArrayList<ModelPdf>
 
     //binding
-    private lateinit var binding:RowPdfAdminBinding
+    private lateinit var binding: RowPdfAdminBinding
 
     //filter object
     private var filter: FilterPdfAdmin? = null
@@ -33,7 +33,7 @@ class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPdfAdmin {
-        binding = RowPdfAdminBinding.inflate(LayoutInflater.from(context),parent,false)
+        binding = RowPdfAdminBinding.inflate(LayoutInflater.from(context), parent, false)
 
         return HolderPdfAdmin(binding.root)
     }
@@ -63,10 +63,16 @@ class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filt
         MyApplication.loadCategory(categoryId = categoryId, holder.categoryTv)
 
         //không cần số trang nên set null cho pages
-        MyApplication.loadPdfFromUrlSinglePage(pdfUrl, title, holder.pdfView, holder.progressBar, null)
+        MyApplication.loadPdfFromUrlSinglePage(
+            pdfUrl,
+            title,
+            holder.pdfView,
+            holder.progressBar,
+            null
+        )
 
         //lấy size pdf nè
-        MyApplication.loadPdfSize(pdfUrl,title, holder.sizeTv)
+        MyApplication.loadPdfSize(pdfUrl, title, holder.sizeTv)
 
         //xử lí sự kiện click: xóa sách và edit sách
         holder.moreBtn.setOnClickListener {
@@ -90,16 +96,15 @@ class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filt
 
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Tùy chọn")
-            .setItems(options){dialog, position ->
-                if(position == 0){
+            .setItems(options) { dialog, position ->
+                if (position == 0) {
                     //sửa
-                    val intent = Intent(context,PdfEditActivity::class.java)
+                    val intent = Intent(context, PdfEditActivity::class.java)
                     intent.putExtra("bookId", bookId)
                     context.startActivity(intent)
-                }
-                else if(position == 1){
+                } else if (position == 1) {
                     //xóa (tạo hàm trong lớp MyApplication
-                    MyApplication.deleteBook(context,bookId, bookUrl, bookTitle)
+                    MyApplication.deleteBook(context, bookId, bookUrl, bookTitle)
                 }
             }
             .show()
@@ -107,15 +112,16 @@ class AdapterPdfAdmin:RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filt
 
 
     override fun getFilter(): Filter {
-        if(filter == null){
-            filter = FilterPdfAdmin(filterList,this)
+        if (filter == null) {
+            filter = FilterPdfAdmin(filterList, this)
 
         }
 
         return filter as FilterPdfAdmin
     }
+
     //view holder
-    inner class HolderPdfAdmin(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class HolderPdfAdmin(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         //UI view row_pdf_admin.xml
         val pdfView = binding.pdfView

@@ -38,8 +38,10 @@
 
     <!--nội dung-->
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bookOptionLl"
         android:layout_below="@+id/toolbarRl"
         android:padding="10dp">
 
@@ -227,5 +229,36 @@
                 android:textColor="@color/black" />
         </LinearLayout>
     </ScrollView>
+
+    <!---->
+
+    <LinearLayout
+        android:id="@+id/bookOptionLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/design_default_color_primary"
+        android:orientation="horizontal">
+
+        <!--nút đọc-->
+        <Button
+            android:id="@+id/readBookBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_book_white"
+            android:text="Đọc" />
+
+        <!--nút tải xuống-->
+        <Button
+            android:id="@+id/downloadBookBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tải về"
+            android:drawableTop="@drawable/ic_download_white"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
 
 </RelativeLayout>

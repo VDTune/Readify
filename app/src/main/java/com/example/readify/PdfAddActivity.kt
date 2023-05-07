@@ -54,7 +54,7 @@ class PdfAddActivity : AppCompatActivity() {
 
         //setup tien trinh
         progressDialog = ProgressDialog(this)
-        progressDialog.setTitle("Chỉ một chút")
+        progressDialog.setTitle("Chỉ một chút...")
         progressDialog.setCanceledOnTouchOutside(false)
 
         //xử lí nút back
@@ -63,7 +63,7 @@ class PdfAddActivity : AppCompatActivity() {
         }
 
         //xử lí click hiển thị danh sách thể loại
-        binding.categoryTv.setOnClickListener{
+        binding.categoryTv.setOnClickListener {
             categoryPickDialog()
         }
 
@@ -97,19 +97,15 @@ class PdfAddActivity : AppCompatActivity() {
         category = binding.categoryTv.text.toString().trim()
 
         //xác thực
-        if(title.isEmpty()){
-            Toast.makeText(this,"Vui lòng nhập tiêu đề...",Toast.LENGTH_SHORT).show()
-        }
-        else if (desc.isEmpty()){
-            Toast.makeText(this,"Vui lòng nhập mô tả...",Toast.LENGTH_SHORT).show()
-        }
-        else if (category.isEmpty()){
-            Toast.makeText(this,"Vui lòng nhập thể loại...",Toast.LENGTH_SHORT).show()
-        }
-        else if(pdfUri == null){
-            Toast.makeText(this,"Vui lòng chọn URI...",Toast.LENGTH_SHORT).show()
-        }
-        else{
+        if (title.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập tiêu đề...", Toast.LENGTH_SHORT).show()
+        } else if (desc.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập mô tả...", Toast.LENGTH_SHORT).show()
+        } else if (category.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập thể loại...", Toast.LENGTH_SHORT).show()
+        } else if (pdfUri == null) {
+            Toast.makeText(this, "Vui lòng chọn URI...", Toast.LENGTH_SHORT).show()
+        } else {
             //xác thực thành công, bắt đầu upload
             uploadPdfToStorage()
         }
@@ -132,7 +128,7 @@ class PdfAddActivity : AppCompatActivity() {
         //tham chiếu lưu trữ
         val storageReference = FirebaseStorage.getInstance().getReference(filePathAndName)
         storageReference.putFile(pdfUri!!)
-            .addOnSuccessListener {taskSnapshot ->
+            .addOnSuccessListener { taskSnapshot ->
                 Log.d(TAG, "uploadPdfToStorage: PDF uploaded now getting url...")
 
                 /*lấy url*/
@@ -142,10 +138,11 @@ class PdfAddActivity : AppCompatActivity() {
 
                 uploadPdfInfoToDb(uploadedPdfUrl, timestamp)
             }
-            .addOnFailureListener {e ->
+            .addOnFailureListener { e ->
                 Log.d(TAG, "uploadPdfToStorage: Failed to upload due to ${e.message}")
                 progressDialog.dismiss()
-                Toast.makeText(this,"Tải lên thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Tải lên thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
@@ -175,13 +172,17 @@ class PdfAddActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Log.d(TAG, "uploadPdfInfoToDb: upload to db")
                 progressDialog.dismiss()
-                Toast.makeText(this, "Đã tải lên...",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Đã tải lên...", Toast.LENGTH_SHORT).show()
                 pdfUri = null
+                binding.titleEt.setText("")
+                binding.descEt.setText("")
+                binding.categoryTv.text = ""
             }
-            .addOnFailureListener {e ->
+            .addOnFailureListener { e ->
                 Log.d(TAG, "uploadPdfInfoToDb: Failed to upload due to ${e.message}")
                 progressDialog.dismiss()
-                Toast.makeText(this,"Tải lên thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Tải lên thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
             }
     }
 
@@ -214,23 +215,23 @@ class PdfAddActivity : AppCompatActivity() {
     private var selectedCategoryId = ""
     private var selectedCategoryTitle = ""
 
-    private fun categoryPickDialog(){
+    private fun categoryPickDialog() {
         Log.d(TAG, "categoryPickDialog: Showing pdf category pick dialog")
 
         //lấy mảng chuỗi thể loại từ arraylist
         val categoryArray = arrayOfNulls<String>(categoryArrayList.size)
-        for (i in categoryArrayList.indices){
+        for (i in categoryArrayList.indices) {
             categoryArray[i] = categoryArrayList[i].category
         }
 
         //alert dialog
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Chọn Thể Loại")
-            .setItems(categoryArray){dialog, which ->
+            .setItems(categoryArray) { dialog, which ->
                 //xử lí click chuột lên item(lấy item được click)
                 selectedCategoryId = categoryArrayList[which].id
                 selectedCategoryTitle = categoryArrayList[which].category
-                
+
                 //đưa thể loại vào textview thể loại
                 binding.categoryTv.text = selectedCategoryTitle
 
@@ -239,7 +240,7 @@ class PdfAddActivity : AppCompatActivity() {
             }.show()
     }
 
-    private fun  pdfPickIntent(){
+    private fun pdfPickIntent() {
         Log.d(TAG, "pdfPickIntent: Starting pdf pick intent")
 
         val intent = Intent()
@@ -250,14 +251,13 @@ class PdfAddActivity : AppCompatActivity() {
 
     val pdfActivityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
-        ActivityResultCallback<ActivityResult>{result ->
-            if (result.resultCode == RESULT_OK){
+        ActivityResultCallback<ActivityResult> { result ->
+            if (result.resultCode == RESULT_OK) {
                 Log.d(TAG, "PDF Picked")
                 pdfUri = result.data!!.data
-            }
-            else {
+            } else {
                 Log.d(TAG, "PDF Pick cancelled")
-                Toast.makeText(this,"Hủy bỏ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Hủy bỏ", Toast.LENGTH_SHORT).show()
             }
         }
 

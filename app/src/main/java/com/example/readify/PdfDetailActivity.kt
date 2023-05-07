@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.readify.databinding.ActivityPdfDetailBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -32,6 +33,10 @@ class PdfDetailActivity : AppCompatActivity() {
     private var bookTitle = ""
     private var bookUrl = ""
 
+    private var isInMyFavorite = false
+
+    private lateinit var firebaseAuth: FirebaseAuth
+
     //show tien trinh
     private lateinit var progressDialog: ProgressDialog
 
@@ -48,6 +53,12 @@ class PdfDetailActivity : AppCompatActivity() {
         progressDialog = ProgressDialog(this)
         progressDialog.setTitle("Chỉ một chút...")
         progressDialog.setCanceledOnTouchOutside(false)
+
+        //khởi tạo firebase auth
+        firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth.currentUser != null) {
+            checkIsFavorite()
+        }
 
         //tăng số lượt xem khi bắt đầu trang pdf detail
         MyApplication.incrementBookViewCount(bookId)
@@ -81,6 +92,24 @@ class PdfDetailActivity : AppCompatActivity() {
                     "onCreate: Storage permission không được cấp phép, hãy yêu cầu quyền truy cập "
                 )
                 requesStoragePermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+
+        //xử lí nút thích
+        binding.favoriteBtn.setOnClickListener {
+            //kiểm tra người dùng đã đăng kí hay chưa
+            if(firebaseAuth.currentUser == null){
+                //người dùng chưa đăng nhập
+                Toast.makeText(this, "Bạn chưa đăng nhập!",Toast.LENGTH_SHORT).show()
+            }else{
+                //người dùng đã đăng nhập và có thể thích sách
+                if(isInMyFavorite){
+                    //đã được thích, chỉ bỏ thích
+                    removeFromFavorite()
+                }else {
+                    //chưa được thích, chỉ được thích
+                    addToFavorite()
+                }
             }
         }
     }
@@ -231,5 +260,72 @@ class PdfDetailActivity : AppCompatActivity() {
 
                 }
             })
+    }
+
+    private fun checkIsFavorite(){
+        Log.d(TAG, "checkIsFavorite: kiểm tra yêu thích")
+
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    isInMyFavorite = snapshot.exists()
+                    if(isInMyFavorite){
+                        //sách đã được thích
+                        Log.d(TAG, "onDataChange: sách đã được thích")
+
+                        //đổi icon
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white,0,0)
+                        binding.favoriteBtn.text = "Bỏ thích"
+                    }else{
+                        //Sách chưa được thích
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white,0,0)
+                        binding.favoriteBtn.text = "Thích"
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+    }
+
+    private fun addToFavorite(){
+        Log.d(TAG, "addToFavorite: Đang thêm vào yêu thích...")
+        val timestamp = System.currentTimeMillis()
+
+        val hashMap = HashMap<String, Any>()
+        hashMap["bookId"] = bookId
+        hashMap["timestamp"] = timestamp
+
+        //luu thông tin sách được yêu thích vào firebase
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                //thành công thêm vào yêu thích
+                Log.d(TAG, "addToFavorite: ĐÃ THÊM VÀO YÊU THÍCH")
+
+            }
+            .addOnFailureListener {e ->
+                Log.d(TAG, "addToFavorite: thêm vào yêu thích thất bại... lỗi: ${e.message}")
+                Toast.makeText(this, "Lỗi khi thêm vào yêu thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun removeFromFavorite(){
+        Log.d(TAG, "removeFromFavorite: Bỏ thích...")
+
+        //data ref
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
+            .removeValue()
+            .addOnSuccessListener {
+                Log.d(TAG, "removeFromFavorite: Bỏ thích thành công!")
+            }
+            .addOnFailureListener {e ->
+                Log.d(TAG, "removeFromFavorite: Bỏ thích thất bại...Lỗi: ${e.message}")
+                Toast.makeText(this, "Lỗi bỏ thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }

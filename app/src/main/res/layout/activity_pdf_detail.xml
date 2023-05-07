@@ -247,7 +247,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableTop="@drawable/ic_book_white"
-            android:text="Đọc" />
+            android:text="Đọc"
+            android:textSize="10sp"/>
 
         <!--nút tải xuống-->
         <Button
@@ -256,9 +257,18 @@
             android:layout_height="wrap_content"
             android:text="Tải về"
             android:drawableTop="@drawable/ic_download_white"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:textSize="10sp"/>
 
-
+        <!--nút thêm/xóa khỏi danh sách yêu thích-->
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/favoriteBtn"
+            android:text="Thích"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_favorite_border_white"
+            android:textSize="10sp"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.activity
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.readify.MyApplication.Companion.loadCategory
 import com.example.readify.databinding.ActivityPdfEditBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

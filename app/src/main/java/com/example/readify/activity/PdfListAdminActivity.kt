@@ -1,11 +1,13 @@
-package com.example.readify
+package com.example.readify.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import com.example.readify.adapter.AdapterPdfAdmin
 import com.example.readify.databinding.ActivityPdfListAdminBinding
+import com.example.readify.model.ModelPdf
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

@@ -1,17 +1,19 @@
-package com.example.readify
-
+package com.example.readify.activity
+import com.example.readify.activity.ProfileActivity
 import android.content.Context
 import android.content.Intent
-import android.icu.text.CaseMap.Title
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.readify.BooksUserFragment
+import com.example.readify.R
 import com.example.readify.databinding.ActivityDashboardUserBinding
+import com.example.readify.model.ModelCategory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -45,9 +47,14 @@ class DashboardUserActivity : AppCompatActivity() {
             finish()
             Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show()
         }
+
+        //xử lí nút hiển thị profile
+        binding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
-    private fun setupWithViewPagerAdapter(viewPager: ViewPager){
+    private fun setupWithViewPagerAdapter(viewPager: ViewPager) {
         viewPagerAdapter = ViewPagerAdapter(
             supportFragmentManager,
             FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
@@ -56,7 +63,7 @@ class DashboardUserActivity : AppCompatActivity() {
 
         categoryArrayList = ArrayList()
         val ref = FirebaseDatabase.getInstance().getReference("Category")
-        ref.addListenerForSingleValueEvent(object: ValueEventListener{
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 categoryArrayList.clear()
 
@@ -96,8 +103,8 @@ class DashboardUserActivity : AppCompatActivity() {
                 viewPagerAdapter.notifyDataSetChanged()
 
                 //tai xuong tu firebase
-                for (ds in snapshot.children){
-                    val model = ds. getValue(ModelCategory::class.java)
+                for (ds in snapshot.children) {
+                    val model = ds.getValue(ModelCategory::class.java)
 
                     //them vao list
                     categoryArrayList.add(model!!)
@@ -122,7 +129,9 @@ class DashboardUserActivity : AppCompatActivity() {
 
         viewPager.adapter = viewPagerAdapter
     }
-    class ViewPagerAdapter(fm: FragmentManager, behavior: Int, context: Context): FragmentPagerAdapter(fm, behavior){
+
+    class ViewPagerAdapter(fm: FragmentManager, behavior: Int, context: Context) :
+        FragmentPagerAdapter(fm, behavior) {
         private val fragmentList: ArrayList<BooksUserFragment> = ArrayList()
         private val fragmentTitleList: ArrayList<String> = ArrayList()
         private val context: Context
@@ -130,6 +139,7 @@ class DashboardUserActivity : AppCompatActivity() {
         init {
             this.context = context
         }
+
         override fun getCount(): Int {
             return fragmentList.size
         }
@@ -142,7 +152,7 @@ class DashboardUserActivity : AppCompatActivity() {
             return fragmentTitleList[position]
         }
 
-        public fun addFragment(fragment: BooksUserFragment, title: String){
+        public fun addFragment(fragment: BooksUserFragment, title: String) {
             fragmentList.add(fragment)
 
             fragmentTitleList.add(title)
@@ -155,9 +165,19 @@ class DashboardUserActivity : AppCompatActivity() {
         if (firebaseUser == null) {
             //chưa đăng nhặp, người dùng có thể ở lại user dashboard khi chưa đăng nhâp
             binding.subTitleTv.text = "Bạn chưa đăng nhập"
+
+            //ẩn nút đăng xuất và xem profile khi chưa đăng nhập
+            binding.profileBtn.visibility = View.GONE
+            binding.logoutBtn.visibility = View.GONE
         } else {
-            val email = firebaseUser.email //lấy email
-            binding.subTitleTv.text = email//Hiện email người dùng bằng text view
+            //lấy email
+            val email = firebaseUser.email
+            //Hiện email người dùng bằng text view
+            binding.subTitleTv.text = email
+
+            //hiển thị nút đăng xuất và xem profile khi đăng nhập
+            binding.profileBtn.visibility = View.VISIBLE
+            binding.logoutBtn.visibility = View.VISIBLE
         }
 
     }

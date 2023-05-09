@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -9,7 +9,12 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.example.readify.filter.FilterPdfAdmin
+import com.example.readify.MyApplication
+import com.example.readify.activity.PdfDetailActivity
+import com.example.readify.activity.PdfEditActivity
 import com.example.readify.databinding.RowPdfAdminBinding
+import com.example.readify.model.ModelPdf
 
 class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Filterable {
 
@@ -86,7 +91,7 @@ class AdapterPdfAdmin : RecyclerView.Adapter<AdapterPdfAdmin.HolderPdfAdmin>, Fi
         }
     }
 
-    private fun moreOptionDialog(model: ModelPdf, holder: AdapterPdfAdmin.HolderPdfAdmin) {
+    private fun moreOptionDialog(model: ModelPdf, holder: HolderPdfAdmin) {
         //lấy tên, id , url của sách
         val bookId = model.id
         val bookUrl = model.url

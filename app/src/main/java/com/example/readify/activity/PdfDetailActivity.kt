@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.activity
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -11,6 +11,9 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.example.readify.Constants
+import com.example.readify.MyApplication
+import com.example.readify.R
 import com.example.readify.databinding.ActivityPdfDetailBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -275,11 +278,13 @@ class PdfDetailActivity : AppCompatActivity() {
                         Log.d(TAG, "onDataChange: sách đã được thích")
 
                         //đổi icon
-                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white,0,0)
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+                            R.drawable.ic_favorite_white,0,0)
                         binding.favoriteBtn.text = "Bỏ thích"
                     }else{
                         //Sách chưa được thích
-                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white,0,0)
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
+                            R.drawable.ic_favorite_border_white,0,0)
                         binding.favoriteBtn.text = "Thích"
                     }
                 }

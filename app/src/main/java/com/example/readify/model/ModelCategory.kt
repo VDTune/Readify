@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.model
 
 class ModelCategory {
 

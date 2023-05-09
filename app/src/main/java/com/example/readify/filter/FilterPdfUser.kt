@@ -1,6 +1,8 @@
-package com.example.readify
+package com.example.readify.filter
 
 import android.widget.Filter
+import com.example.readify.adapter.AdapterPdfUser
+import com.example.readify.model.ModelPdf
 
 
 class FilterPdfUser: Filter {

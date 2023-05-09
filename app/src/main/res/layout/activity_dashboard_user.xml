@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back01"
-    tools:context=".DashboardUserActivity">
+    tools:context=".activity.DashboardUserActivity">
 
     <!--toolbar-->
     <RelativeLayout
@@ -13,6 +13,17 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@drawable/shape_toolbar02">
+
+        <!--Hiển thị profile-->
+        <ImageButton
+            android:id="@+id/profileBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_person_white" />
+
 
         <TextView
             android:id="@+id/titleTv"
@@ -43,25 +54,25 @@
             android:background="@android:color/transparent"
             android:src="@drawable/ic_logout_white" />
     </RelativeLayout>
-    
+
     <!--Tabs: show thể loại sách-->
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tabLayout"
-        android:background="@android:color/transparent"
+        android:layout_below="@id/toolbarRl"
         android:layout_margin="5dp"
+        android:background="@android:color/transparent"
+        app:tabBackground="@drawable/tab_selector"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="0dp"
-        app:tabBackground="@drawable/tab_selector"
-        android:layout_below="@id/toolbarRl"
-        app:tabMode="scrollable"/>
+        app:tabMode="scrollable" />
 
     <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/viewPager"
-        android:layout_below="@+id/tabLayout"/>
+        android:layout_below="@+id/tabLayout" />
 
 
 </RelativeLayout>

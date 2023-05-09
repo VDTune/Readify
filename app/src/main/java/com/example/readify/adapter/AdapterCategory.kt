@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.adapter
 
 import android.app.AlertDialog
 import android.content.Context
@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.readify.databinding.ActivityCategoryAddBinding
+import com.example.readify.filter.FilterCategory
+import com.example.readify.model.ModelCategory
+import com.example.readify.activity.PdfListAdminActivity
 import com.example.readify.databinding.RowCategoryBinding
 import com.google.firebase.database.FirebaseDatabase
 

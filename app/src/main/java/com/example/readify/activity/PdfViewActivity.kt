@@ -1,12 +1,13 @@
-package com.example.readify
+package com.example.readify.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import com.example.readify.Constants
+import com.example.readify.R
 import com.example.readify.databinding.ActivityPdfViewBinding
-import com.google.android.datatransport.runtime.firebase.transport.LogEventDropped
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase

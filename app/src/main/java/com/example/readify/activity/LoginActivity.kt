@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.activity
 
 import android.app.ProgressDialog
 import android.content.ContentValues
@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
+import com.example.readify.R
 import com.example.readify.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient

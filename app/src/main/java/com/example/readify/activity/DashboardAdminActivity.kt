@@ -1,11 +1,13 @@
-package com.example.readify
+package com.example.readify.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import com.example.readify.adapter.AdapterCategory
 import com.example.readify.databinding.ActivityDashboardAdminBinding
+import com.example.readify.model.ModelCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -66,6 +68,11 @@ class DashboardAdminActivity : AppCompatActivity() {
         binding.addPdfFab.setOnClickListener {
             startActivity(Intent(this, PdfAddActivity::class.java))
         }
+
+        //xử lí nút hiển thị profile
+        binding.profileBtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     private fun loadCategory() {
@@ -97,6 +104,7 @@ class DashboardAdminActivity : AppCompatActivity() {
             }
         })
     }
+
 
     private fun checkUser() {
         val firebaseUser = firebaseAuth.currentUser

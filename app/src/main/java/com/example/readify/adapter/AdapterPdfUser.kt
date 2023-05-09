@@ -1,4 +1,4 @@
-package com.example.readify
+package com.example.readify.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,11 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.example.readify.filter.FilterPdfUser
+import com.example.readify.MyApplication
+import com.example.readify.activity.PdfDetailActivity
 import com.example.readify.databinding.RowPdfUserBinding
+import com.example.readify.model.ModelPdf
 
 class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
     private var context: Context
@@ -58,7 +62,13 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
         holder.descTv.text = desc
         holder.dateTv.text = date
 
-        MyApplication.loadPdfFromUrlSinglePage(url, title, holder.pdfView, holder.progressBar, null) //không cần số trnag nên cứ bỏ qua
+        MyApplication.loadPdfFromUrlSinglePage(
+            url,
+            title,
+            holder.pdfView,
+            holder.progressBar,
+            null
+        ) //không cần số trnag nên cứ bỏ qua
 
         MyApplication.loadCategory(categoryId, holder.categoryTv)
 

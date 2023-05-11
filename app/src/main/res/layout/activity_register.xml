@@ -28,7 +28,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="60dp"
             android:src="@drawable/logo" />
 
         <TextView
@@ -82,7 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nameTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="30dp"
                 app:hintEnabled="false">
 
                 <EditText
@@ -105,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/emailTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="30dp"
                 app:hintEnabled="false"
                 app:passwordToggleEnabled="true">
 
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/passwordTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="30dp"
                 app:hintEnabled="false"
                 app:passwordToggleEnabled="true">
 

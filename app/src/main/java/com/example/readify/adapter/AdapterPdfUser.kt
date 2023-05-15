@@ -8,11 +8,18 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.readify.filter.FilterPdfUser
 import com.example.readify.MyApplication
+import com.example.readify.R
 import com.example.readify.activity.PdfDetailActivity
 import com.example.readify.databinding.RowPdfUserBinding
 import com.example.readify.model.ModelPdf
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.lang.Exception
 
 class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filterable {
     private var context: Context
@@ -62,6 +69,8 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
         holder.descTv.text = desc
         holder.dateTv.text = date
 
+//        loadUserDetail(model, holder)
+
         MyApplication.loadPdfFromUrlSinglePage(
             url,
             title,
@@ -81,6 +90,27 @@ class AdapterPdfUser : RecyclerView.Adapter<AdapterPdfUser.HolderPdfUser>, Filte
             context.startActivity(intent)
         }
     }
+
+    private fun loadUserDetail(model: ModelPdf, holder: AdapterPdfUser.HolderPdfUser) {
+        val uid = model.uid
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.child(uid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val name = "${snapshot.child("name").value}"
+                    val profileImage = "${snapshot.child("profileImage").value}"
+
+                    //set data
+                    holder.titleTv.text = name
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+    }
+
     override fun getFilter(): Filter {
         if(filter == null ){
             filter = FilterPdfUser(filterList, this)

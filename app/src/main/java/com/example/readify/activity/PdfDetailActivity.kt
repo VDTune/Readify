@@ -1,5 +1,7 @@
 package com.example.readify.activity
 
+import android.Manifest
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -7,14 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.disklrucache.DiskLruCache.Value
 import com.example.readify.Constants
 import com.example.readify.MyApplication
 import com.example.readify.R
+import com.example.readify.adapter.AdapterComment
 import com.example.readify.databinding.ActivityPdfDetailBinding
+import com.example.readify.databinding.DialogCommentAddBinding
+import com.example.readify.model.ModelComment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -43,6 +50,12 @@ class PdfDetailActivity : AppCompatActivity() {
     //show tien trinh
     private lateinit var progressDialog: ProgressDialog
 
+    //array list đẻ chứa cmt
+    private lateinit var commentArrayList: ArrayList<ModelComment>
+
+    //adapter để set cho recyclerview
+    private lateinit var adapterComment: AdapterComment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +81,7 @@ class PdfDetailActivity : AppCompatActivity() {
 
         //load chi tiết
         loadBookDetails()
+        showComments()
 
         //back btn
         binding.backBtn.setOnClickListener {
@@ -84,7 +98,7 @@ class PdfDetailActivity : AppCompatActivity() {
         binding.downloadBookBtn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this,
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 Log.d(TAG, "onCreate: Storage permission đã được cấp phép")
@@ -94,27 +108,132 @@ class PdfDetailActivity : AppCompatActivity() {
                     TAG,
                     "onCreate: Storage permission không được cấp phép, hãy yêu cầu quyền truy cập "
                 )
-                requesStoragePermissionLauncher.launch(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                requesStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }
 
         //xử lí nút thích
         binding.favoriteBtn.setOnClickListener {
             //kiểm tra người dùng đã đăng kí hay chưa
-            if(firebaseAuth.currentUser == null){
+            if (firebaseAuth.currentUser == null) {
                 //người dùng chưa đăng nhập
-                Toast.makeText(this, "Bạn chưa đăng nhập!",Toast.LENGTH_SHORT).show()
-            }else{
+                Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show()
+            } else {
                 //người dùng đã đăng nhập và có thể thích sách
-                if(isInMyFavorite){
+                if (isInMyFavorite) {
                     //đã được thích, chỉ bỏ thích
                     MyApplication.removeFromFavorite(this, bookId)
-                }else {
+                } else {
                     //chưa được thích, chỉ được thích
                     addToFavorite()
                 }
             }
         }
+
+        //xử lí click hiên thị thêm bình luận
+        binding.addCommentBtn.setOnClickListener {
+            if (firebaseAuth.currentUser == null) {
+                //chưa đăng nhập
+                Toast.makeText(this, "Đăng nhập để bình luận", Toast.LENGTH_SHORT).show()
+            } else {
+                addCommentDialog()
+            }
+
+        }
+    }
+
+    private fun showComments() {
+        //khởi tạo list
+        commentArrayList = ArrayList()
+
+        //đường dẫn db
+        val ref = FirebaseDatabase.getInstance().getReference("Book")
+        ref.child(bookId).child("Comments")
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    commentArrayList.clear()
+                    for(ds in snapshot.children){
+                        val model = ds.getValue(ModelComment::class.java)
+
+                        //them vao danh sach
+                        commentArrayList.add(model!!)
+                    }
+                    //setup adapter
+                    adapterComment = AdapterComment(this@PdfDetailActivity, commentArrayList)
+
+                    //set adapter cho recyclerview
+                    binding.commentRv.adapter = adapterComment
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+            })
+    }
+
+    private var comment = ""
+    private fun addCommentDialog() {
+        val commentAddbinding = DialogCommentAddBinding.inflate(LayoutInflater.from(this))
+
+        //setup hop thong bao
+        val builder = AlertDialog.Builder(this, R.style.CustomDialog)
+        builder.setView(commentAddbinding.root)
+
+        //tạo và hiển thị hộp thoại
+        val alertDialog = builder.create()
+        alertDialog.show()
+
+        //xử lí click
+        commentAddbinding.backBtn.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        //xử lỉ thêm cmt
+        commentAddbinding.submitCommentBtn.setOnClickListener {
+            comment = commentAddbinding.commentEt.text.toString().trim()
+            //xác thực dữ liệu
+            if (comment.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập bình luận...", Toast.LENGTH_SHORT).show()
+            } else {
+                alertDialog.dismiss()
+                addComment()
+            }
+        }
+
+    }
+
+    private fun addComment() {
+        //hiển thị tiến trình
+        progressDialog.setMessage("Thêm bình luận...")
+        progressDialog.show()
+        progressDialog.setCanceledOnTouchOutside(false)
+
+        val timestamp = "${System.currentTimeMillis()}"
+
+        //setup dữ liệu để thêm vào db
+        val hashMap = HashMap<String, Any>()
+        hashMap["id"] = "$timestamp"
+        hashMap["bookId"] = "$bookId"
+        hashMap["timestamp"] = "$timestamp"
+        hashMap["comment"] = "$comment"
+        hashMap["uid"] = "${firebaseAuth.uid}"
+
+        //đường dẫn db Book > bookId > Comments > commentId > commentData
+        val ref = FirebaseDatabase.getInstance().getReference("Book")
+        ref.child(bookId).child("Comments").child(timestamp)
+            .setValue(hashMap)
+            .addOnSuccessListener {
+                progressDialog.dismiss()
+                Toast.makeText(this, "Đã thêm bình luận", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                progressDialog.dismiss()
+                Toast.makeText(
+                    this,
+                    "Bình luận không thành công... Lỗi: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
 
     private val requesStoragePermissionLauncher =
@@ -265,26 +384,30 @@ class PdfDetailActivity : AppCompatActivity() {
             })
     }
 
-    private fun checkIsFavorite(){
+    private fun checkIsFavorite() {
         Log.d(TAG, "checkIsFavorite: kiểm tra yêu thích")
 
         val ref = FirebaseDatabase.getInstance().getReference("Users")
         ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
-            .addValueEventListener(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     isInMyFavorite = snapshot.exists()
-                    if(isInMyFavorite){
+                    if (isInMyFavorite) {
                         //sách đã được thích
                         Log.d(TAG, "onDataChange: sách đã được thích")
 
                         //đổi icon
-                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-                            R.drawable.ic_favorite_white,0,0)
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0,
+                            R.drawable.ic_favorite_white, 0, 0
+                        )
                         binding.favoriteBtn.text = "Bỏ thích"
-                    }else{
+                    } else {
                         //Sách chưa được thích
-                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0,
-                            R.drawable.ic_favorite_border_white,0,0)
+                        binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0,
+                            R.drawable.ic_favorite_border_white, 0, 0
+                        )
                         binding.favoriteBtn.text = "Thích"
                     }
                 }
@@ -295,7 +418,7 @@ class PdfDetailActivity : AppCompatActivity() {
             })
     }
 
-    private fun addToFavorite(){
+    private fun addToFavorite() {
         Log.d(TAG, "addToFavorite: Đang thêm vào yêu thích...")
         val timestamp = System.currentTimeMillis()
 
@@ -312,9 +435,13 @@ class PdfDetailActivity : AppCompatActivity() {
                 Log.d(TAG, "addToFavorite: ĐÃ THÊM VÀO YÊU THÍCH")
 
             }
-            .addOnFailureListener {e ->
+            .addOnFailureListener { e ->
                 Log.d(TAG, "addToFavorite: thêm vào yêu thích thất bại... lỗi: ${e.message}")
-                Toast.makeText(this, "Lỗi khi thêm vào yêu thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Lỗi khi thêm vào yêu thích... Lỗi: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 

@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.example.readify.BooksUserFragment
 import com.example.readify.R
 import com.example.readify.databinding.ActivityDashboardUserBinding
+
 import com.example.readify.model.ModelCategory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,6 +23,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.lang.Exception
 
 class DashboardUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardUserBinding
@@ -52,6 +55,8 @@ class DashboardUserActivity : AppCompatActivity() {
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+
+
     }
 
     private fun setupWithViewPagerAdapter(viewPager: ViewPager) {
@@ -68,9 +73,9 @@ class DashboardUserActivity : AppCompatActivity() {
                 categoryArrayList.clear()
 
                 //them data vao model
-                val modelAll = ModelCategory("01", "All", 1, "")
-                val modelMostViewed = ModelCategory("01", "Most Viewed", 1, "")
-                val modelMostDownloaded = ModelCategory("01", "Most Downloaded", 1, "")
+                val modelAll = ModelCategory("01", "Tất cả", 1, "")
+                val modelMostViewed = ModelCategory("01", "Theo lượt xem", 1, "")
+                val modelMostDownloaded = ModelCategory("01", "Theo lượt tải", 1, "")
 
                 //them vao lis
                 categoryArrayList.add(modelAll)
@@ -169,7 +174,20 @@ class DashboardUserActivity : AppCompatActivity() {
             //ẩn nút đăng xuất và xem profile khi chưa đăng nhập
             binding.profileBtn.visibility = View.GONE
             binding.logoutBtn.visibility = View.GONE
+//            binding.subTitleTv.visibility = View.GONE
         } else {
+            val ref = FirebaseDatabase.getInstance().getReference("Users")
+            ref.child(firebaseUser.uid)
+                .addListenerForSingleValueEvent(object : ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val name = "${snapshot.child("name").value}"
+                        binding.titleTv.text = name
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+                })
             //lấy email
             val email = firebaseUser.email
             //Hiện email người dùng bằng text view

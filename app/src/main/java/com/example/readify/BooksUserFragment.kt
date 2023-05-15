@@ -65,13 +65,13 @@ class BooksUserFragment : Fragment {
         // Inflate the layout for this fragment
         binding = FragmentBooksUserBinding.inflate(LayoutInflater.from(context), container, false)
         Log.d(TAG, "onCreateView: Category: $category")
-        if(category == "All"){
+        if(category == "Tất cả"){
             //hiển thị tất cả sách
             loadAllBooks()
-        }else if(category == "Most Viewed"){
+        }else if(category == "Theo lượt xem"){
             //hiển thị sách nhiều lượt xem nhất
             loadMostViewedDownloadBooks("viewCount")
-        }else if (category == "Most Download"){
+        }else if (category == "Theo lượt tải"){
             // hiển thị sách nhiều lượt tải nhất
             loadMostViewedDownloadBooks("downloadCount")
         }else{

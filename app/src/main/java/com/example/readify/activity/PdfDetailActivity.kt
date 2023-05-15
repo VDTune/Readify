@@ -108,7 +108,7 @@ class PdfDetailActivity : AppCompatActivity() {
                 //người dùng đã đăng nhập và có thể thích sách
                 if(isInMyFavorite){
                     //đã được thích, chỉ bỏ thích
-                    removeFromFavorite()
+                    MyApplication.removeFromFavorite(this, bookId)
                 }else {
                     //chưa được thích, chỉ được thích
                     addToFavorite()
@@ -318,19 +318,5 @@ class PdfDetailActivity : AppCompatActivity() {
             }
     }
 
-    private fun removeFromFavorite(){
-        Log.d(TAG, "removeFromFavorite: Bỏ thích...")
 
-        //data ref
-        val ref = FirebaseDatabase.getInstance().getReference("Users")
-        ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
-            .removeValue()
-            .addOnSuccessListener {
-                Log.d(TAG, "removeFromFavorite: Bỏ thích thành công!")
-            }
-            .addOnFailureListener {e ->
-                Log.d(TAG, "removeFromFavorite: Bỏ thích thất bại...Lỗi: ${e.message}")
-                Toast.makeText(this, "Lỗi bỏ thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 }

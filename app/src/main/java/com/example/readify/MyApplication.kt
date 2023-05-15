@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import com.example.readify.activity.PdfDetailActivity
 import com.github.barteksc.pdfviewer.PDFView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -207,6 +209,25 @@ class MyApplication : Application() {
 
                     }
                 })
+        }
+
+        public fun removeFromFavorite(context: Context, bookId: String){
+            val TAG = "REMOVE_FAV_TAG"
+            Log.d(TAG, "removeFromFavorite: bỏ thích")
+
+            val firebaseAuth = FirebaseAuth.getInstance()
+
+            //data ref
+            val ref = FirebaseDatabase.getInstance().getReference("Users")
+            ref.child(firebaseAuth.uid!!).child("Favorites").child(bookId)
+                .removeValue()
+                .addOnSuccessListener {
+                    Log.d(TAG, "removeFromFavorite: Bỏ thích thành công!")
+                }
+                .addOnFailureListener {e ->
+                    Log.d(TAG, "removeFromFavorite: Bỏ thích thất bại...Lỗi: ${e.message}")
+                    Toast.makeText(context, "Lỗi bỏ thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 

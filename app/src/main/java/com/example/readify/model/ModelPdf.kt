@@ -1,5 +1,7 @@
 package com.example.readify.model
 
+import com.example.readify.adapter.AdapterPdfFavorite
+
 class ModelPdf {
     //tạo biến
     var uid: String = ""
@@ -11,6 +13,7 @@ class ModelPdf {
     var timestamp: Long = 0
     var viewCount: Long = 0
     var downloadCount: Long = 0
+    var isFavorite = false
 
     //constructor rỗng
     constructor()
@@ -25,7 +28,8 @@ class ModelPdf {
         url: String,
         timestamp: Long,
         viewCount: Long,
-        downloadCount: Long
+        downloadCount: Long,
+        isFavorite: Boolean
     ) {
         this.uid = uid
         this.id = id
@@ -36,6 +40,7 @@ class ModelPdf {
         this.timestamp = timestamp
         this.viewCount = viewCount
         this.downloadCount = downloadCount
+        this.isFavorite = isFavorite
     }
 
 

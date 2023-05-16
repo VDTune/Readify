@@ -58,6 +58,11 @@ class LoginActivity : AppCompatActivity() {
             validateData()
         }
 
+        binding.forgotTv.setOnClickListener{
+            val intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
 
         //tạo tham số lấy API gmail đăng nhập
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)

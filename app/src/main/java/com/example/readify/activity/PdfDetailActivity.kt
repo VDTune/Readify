@@ -355,23 +355,23 @@ class PdfDetailActivity : AppCompatActivity() {
                     bookUrl = "${snapshot.child("url").value}"
                     val viewCount = "${snapshot.child("viewCount").value}"
 
-                    //format date
+                    //format ngày
                     val date = MyApplication.formatTimestamp(timestamp.toLong())
 
                     MyApplication.loadCategory(categoryId, binding.categoryTv)
 
                     MyApplication.loadPdfFromUrlSinglePage(
-                        "${bookUrl}",
-                        "${bookTitle}",
+                        "$bookUrl",
+                        "$bookTitle",
                         binding.pdfView,
                         binding.progressBar,
                         binding.pagesTv
                     )
 
-                    MyApplication.loadPdfSize(bookUrl, bookTitle, binding.sizeTv)
+                    MyApplication.loadPdfSize("$bookUrl", "$bookTitle", binding.sizeTv)
 
                     //set data
-                    binding.titleTv.text = "${bookTitle}"
+                    binding.titleTv.text = "${snapshot.child("title").value}"
                     binding.descTv.text = desc
                     binding.viewsTv.text = viewCount
                     binding.downloadsTv.text = downloadCount

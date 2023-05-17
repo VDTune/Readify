@@ -178,8 +178,8 @@ class ProfileEditActivity : AppCompatActivity() {
 
         //setu popup menu
         val popupMenu = PopupMenu(this, binding.profileIv)
-        popupMenu.menu.add(Menu.NONE, 0, 0 , "Camera")
-        popupMenu.menu.add(Menu.NONE, 1, 1 , "Gallery")
+        popupMenu.menu.add(Menu.NONE, 0, 0 , "Máy ảnh")
+        popupMenu.menu.add(Menu.NONE, 1, 1 , "Thư viện")
         popupMenu.show()
 
         popupMenu.setOnMenuItemClickListener {item ->

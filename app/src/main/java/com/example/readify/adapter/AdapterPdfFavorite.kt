@@ -66,7 +66,7 @@ class AdapterPdfFavorite: RecyclerView.Adapter<AdapterPdfFavorite.HolderPdfFavor
                     //lấy thông tin sách
                     val categoryId = "${snapshot.child("categoryId").value}"
                     val desc = "${snapshot.child("desc").value}"
-                    val downloadCount = "${snapshot.child("downloadCount").value}"
+//                    val downloadCount = "${snapshot.child("downloadCount").value}"
                     val timestamp = "${snapshot.child("timestamp").value}"
                     val title = "${snapshot.child("title").value}"
                     val uid = "${snapshot.child("uid").value}"
@@ -82,7 +82,7 @@ class AdapterPdfFavorite: RecyclerView.Adapter<AdapterPdfFavorite.HolderPdfFavor
                     model.uid = uid
                     model.url = url
                     model.viewCount = viewCount.toLong()
-                    model.downloadCount = downloadCount.toLong()
+//                    model.downloadCount = downloadCount.toLong()
 
 
                     //format ngày

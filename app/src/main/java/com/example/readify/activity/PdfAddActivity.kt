@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -163,7 +164,7 @@ class PdfAddActivity : AppCompatActivity() {
         hashMap["url"] = "$uploadedPdfUrl"
         hashMap["timestamp"] = timestamp
         hashMap["viewCount"] = 0
-        hashMap["downloadCount"] = 0
+//        hashMap["downloadCount"] = 0
 
         val ref = FirebaseDatabase.getInstance().getReference("Book")
         ref.child("$timestamp")
@@ -254,11 +255,29 @@ class PdfAddActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 Log.d(TAG, "PDF Picked")
                 pdfUri = result.data!!.data
+                val fileName = getFileName(pdfUri)
+                binding.pdfTitle.setText("$fileName")
             } else {
                 Log.d(TAG, "PDF Pick cancelled")
                 Toast.makeText(this, "Hủy bỏ", Toast.LENGTH_SHORT).show()
             }
         }
-
     )
+
+    private fun getFileName(uri: Uri?): String? {
+        var result: String? = null
+        if (uri != null) {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.let {
+                if (it.moveToFirst()) {
+                    val columnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (columnIndex != -1) {
+                        result = it.getString(columnIndex)
+                    }
+                }
+                it.close()
+            }
+        }
+        return result
+    }
 }

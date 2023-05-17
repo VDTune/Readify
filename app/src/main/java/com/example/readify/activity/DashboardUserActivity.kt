@@ -47,7 +47,7 @@ class DashboardUserActivity : AppCompatActivity() {
         binding.logoutBtn.setOnClickListener {
             firebaseAuth.signOut()
             signOutGoogle()
-            startActivity(Intent(this, LoginActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
             Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show()
         }
@@ -55,6 +55,12 @@ class DashboardUserActivity : AppCompatActivity() {
         //xử lí nút hiển thị profile
         binding.profileBtn.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
+        }
+
+        //nút chuyển tới đăng nhập khi chưa có tài khoản
+        binding.loginBtn.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
 
 
@@ -175,6 +181,7 @@ class DashboardUserActivity : AppCompatActivity() {
             //ẩn nút đăng xuất và xem profile khi chưa đăng nhập
             binding.profileBtn.visibility = View.GONE
             binding.logoutBtn.visibility = View.GONE
+            binding.loginBtn.visibility = View.VISIBLE
 //            binding.subTitleTv.visibility = View.GONE
         } else {
             val ref = FirebaseDatabase.getInstance().getReference("Users")
@@ -197,6 +204,7 @@ class DashboardUserActivity : AppCompatActivity() {
             //hiển thị nút đăng xuất và xem profile khi đăng nhập
             binding.profileBtn.visibility = View.VISIBLE
             binding.logoutBtn.visibility = View.VISIBLE
+            binding.loginBtn.visibility = View.GONE
         }
 
     }

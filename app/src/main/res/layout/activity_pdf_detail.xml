@@ -186,7 +186,7 @@
                     </TableRow>
 
                     <!--lượt tải-->
-                    <TableRow android:layout_marginTop="5dp">
+                    <!--<TableRow android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/downloadsLabelTv"
@@ -207,7 +207,7 @@
                             android:textColor="@color/black"
                             android:text="N/A" />
 
-                    </TableRow>
+                    </TableRow>-->
 
                     <!--số trang-->
                     <TableRow android:layout_marginTop="5dp">
@@ -309,14 +309,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/downloadBookBtn"
+            app:layout_constraintEnd_toStartOf="@id/favoriteBtn"
             android:background="@color/invisible"
             android:text="Đọc"
             android:textColor="@color/white"
             android:textSize="12sp" />
 
         <!--nút tải xuống-->
-        <Button
+<!--        <Button
             android:id="@+id/downloadBookBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -328,7 +328,7 @@
             android:background="@color/invisible"
             android:text="Tải về"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12sp" />-->
 
         <!--nút thêm/xóa khỏi danh sách yêu thích-->
         <Button
@@ -339,7 +339,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/downloadBookBtn"
+            app:layout_constraintStart_toEndOf="@id/readBookBtn"
             android:background="@color/invisible"
             android:text="Thích"
             android:textColor="@color/white"

@@ -133,6 +133,54 @@
                 app:drawableEndCompat="@drawable/ic_drop_down_gray"
                 app:drawableStartCompat="@drawable/ic_category_gray" />
 
+            <!--pdf-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/pdfTitleTil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/categoryTv"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="30dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/word_1"
+                    app:boxStrokeColor="@color/background_1"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/pdfTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_pdf_white"
+                        android:drawablePadding="10dp"
+                        android:drawableTint="@color/background_1"
+                        android:hint="Chọn File PDF"
+                        android:padding="10dp"
+                        android:textColor="@color/word_1"
+                        android:textColorHint="@color/word_1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--nút thêm file pdf-->
+                <ImageButton
+                    android:id="@+id/attachPdfBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/ic_attach_white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/word_1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <!--btn, cập nhật thể loại-->
             <Button
                 android:layout_width="match_parent"
@@ -141,7 +189,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/categoryTv"
+                android:layout_below="@+id/pdfTitleTil"
                 android:text="Cập nhật"
                 android:background="@drawable/shape_button01"
                 android:textColor="@color/white"/>

@@ -82,12 +82,12 @@ class DashboardUserActivity : AppCompatActivity() {
                 //them data vao model
                 val modelAll = ModelCategory("01", "Tất cả", 1, "")
                 val modelMostViewed = ModelCategory("01", "Theo lượt xem", 1, "")
-                val modelMostDownloaded = ModelCategory("01", "Theo lượt tải", 1, "")
+//                val modelMostDownloaded = ModelCategory("01", "Theo lượt tải", 1, "")
 
                 //them vao lis
                 categoryArrayList.add(modelAll)
                 categoryArrayList.add(modelMostViewed)
-                categoryArrayList.add(modelMostDownloaded)
+//                categoryArrayList.add(modelMostDownloaded)
 
                 //them vao viewPagerAdapter
                 viewPagerAdapter.addFragment(
@@ -104,13 +104,13 @@ class DashboardUserActivity : AppCompatActivity() {
                         "${modelMostViewed.uid}"
                     ), modelMostViewed.category
                 )
-                viewPagerAdapter.addFragment(
-                    BooksUserFragment.newInstance(
-                        "${modelMostDownloaded.id}",
-                        "${modelMostDownloaded.category}",
-                        "${modelMostDownloaded.uid}"
-                    ), modelMostDownloaded.category
-                )
+//                viewPagerAdapter.addFragment(
+//                    BooksUserFragment.newInstance(
+//                        "${modelMostDownloaded.id}",
+//                        "${modelMostDownloaded.category}",
+//                        "${modelMostDownloaded.uid}"
+//                    ), modelMostDownloaded.category
+//                )
                 //refresh list
                 viewPagerAdapter.notifyDataSetChanged()
 

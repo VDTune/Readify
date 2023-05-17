@@ -95,22 +95,22 @@ class PdfDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
         //xử lí nút download
-        binding.downloadBookBtn.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                Log.d(TAG, "onCreate: Storage permission đã được cấp phép")
-
-            } else {
-                Log.d(
-                    TAG,
-                    "onCreate: Storage permission không được cấp phép, hãy yêu cầu quyền truy cập "
-                )
-                requesStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-        }
+//        binding.downloadBookBtn.setOnClickListener {
+//            if (ContextCompat.checkSelfPermission(
+//                    this,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                ) == PackageManager.PERMISSION_GRANTED
+//            ) {
+//                Log.d(TAG, "onCreate: Storage permission đã được cấp phép")
+//
+//            } else {
+//                Log.d(
+//                    TAG,
+//                    "onCreate: Storage permission không được cấp phép, hãy yêu cầu quyền truy cập "
+//                )
+//                requesStoragePermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//            }
+//        }
 
         //xử lí nút thích
         binding.favoriteBtn.setOnClickListener {
@@ -236,19 +236,19 @@ class PdfDetailActivity : AppCompatActivity() {
             }
     }
 
-    private val requesStoragePermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            //kiểm tra xem có được cấp hay không (Granted or not)
-            if (isGranted) {
-                Log.d(TAG, "onCreate: STORAGE PERMISSION is granted")
-                downloadBook()
-            } else {
-                Log.d(TAG, "onCreate: STORAGE PERMISSION is denied")
-                Toast.makeText(this, "Quyền truy cập bị từ chối", Toast.LENGTH_SHORT).show()
-            }
-        }
+//    private val requesStoragePermissionLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+//            //kiểm tra xem có được cấp hay không (Granted or not)
+//            if (isGranted) {
+//                Log.d(TAG, "onCreate: STORAGE PERMISSION is granted")
+//                downloadBook()
+//            } else {
+//                Log.d(TAG, "onCreate: STORAGE PERMISSION is denied")
+//                Toast.makeText(this, "Quyền truy cập bị từ chối", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
-    private fun downloadBook() {
+   /* private fun downloadBook() {
         Log.d(TAG, "downloadBook: Downloading Book")
         progressDialog.setMessage("Đang tải sách...")
         progressDialog.show()
@@ -289,56 +289,56 @@ class PdfDetailActivity : AppCompatActivity() {
             Toast.makeText(this, "Lưu vào mục Download", Toast.LENGTH_SHORT).show()
 
             progressDialog.dismiss()
-            incrementDownloadCount()
+//            incrementDownloadCount()
         } catch (e: Exception) {
             progressDialog.dismiss()
             Log.d(TAG, "saveToDownloadFolder: lưu thất bại.. lỗi ${e.message}")
             Toast.makeText(this, "Lưu thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
         }
-    }
+    }*/
 
-    private fun incrementDownloadCount() {
-        //tăng lượt tải về lên firebase
-        Log.d(TAG, "incrementDownloadCount: ")
-
-        //1. lấy lượt tải về đã có
-        val ref = FirebaseDatabase.getInstance().getReference("Book")
-        ref.child(bookId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    //lấy lượt tải về
-                    var downloadCount = "${snapshot.child("downloadCount").value}"
-
-                    Log.d(TAG, "onDataChange: Lượt tải về hiện tại: $downloadCount")
-
-                    if (downloadCount == "" || downloadCount == "null") {
-                        downloadCount = "0"
-                    }
-                    //chuyển đổi thành kiểu Long và +1
-                    val newDownloadCount: Long = downloadCount.toLong() + 1
-                    Log.d(TAG, "onDataChange: Lượt tải về mới: $newDownloadCount")
-
-                    //setup data
-                    val hashMap: HashMap<String, Any> = HashMap()
-                    hashMap["downloadCount"] = newDownloadCount
-
-                    //2.Cập nhật lượt tải lên db
-                    val dbRef = FirebaseDatabase.getInstance().getReference("Book")
-                    dbRef.child(bookId)
-                        .updateChildren(hashMap)
-                        .addOnSuccessListener {
-                            Log.d(TAG, "onDataChange: Tăng lượt tải thành công!!")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.d(TAG, "onDataChange: Tăng lượt tải thất bại... Loi: ${e.message}")
-                        }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-
-                }
-            })
-    }
+//    private fun incrementDownloadCount() {
+//        //tăng lượt tải về lên firebase
+//        Log.d(TAG, "incrementDownloadCount: ")
+//
+//        //1. lấy lượt tải về đã có
+//        val ref = FirebaseDatabase.getInstance().getReference("Book")
+//        ref.child(bookId)
+//            .addListenerForSingleValueEvent(object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    //lấy lượt tải về
+//                    var downloadCount = "${snapshot.child("downloadCount").value}"
+//
+//                    Log.d(TAG, "onDataChange: Lượt tải về hiện tại: $downloadCount")
+//
+//                    if (downloadCount == "" || downloadCount == "null") {
+//                        downloadCount = "0"
+//                    }
+//                    //chuyển đổi thành kiểu Long và +1
+//                    val newDownloadCount: Long = downloadCount.toLong() + 1
+//                    Log.d(TAG, "onDataChange: Lượt tải về mới: $newDownloadCount")
+//
+//                    //setup data
+//                    val hashMap: HashMap<String, Any> = HashMap()
+//                    hashMap["downloadCount"] = newDownloadCount
+//
+//                    //2.Cập nhật lượt tải lên db
+//                    val dbRef = FirebaseDatabase.getInstance().getReference("Book")
+//                    dbRef.child(bookId)
+//                        .updateChildren(hashMap)
+//                        .addOnSuccessListener {
+//                            Log.d(TAG, "onDataChange: Tăng lượt tải thành công!!")
+//                        }
+//                        .addOnFailureListener { e ->
+//                            Log.d(TAG, "onDataChange: Tăng lượt tải thất bại... Loi: ${e.message}")
+//                        }
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//
+//                }
+//            })
+//    }
 
     private fun loadBookDetails() {
         val ref = FirebaseDatabase.getInstance().getReference("Book")
@@ -348,7 +348,7 @@ class PdfDetailActivity : AppCompatActivity() {
                     //lay du lieu
                     val categoryId = "${snapshot.child("categoryId").value}"
                     val desc = "${snapshot.child("desc").value}"
-                    val downloadCount = "${snapshot.child("downloadCount").value}"
+//                    val downloadCount = "${snapshot.child("downloadCount").value}"
                     val timestamp = "${snapshot.child("timestamp").value}"
                     bookTitle = "${snapshot.child("title").value}"
                     val uid = "${snapshot.child("uid").value}"
@@ -374,7 +374,6 @@ class PdfDetailActivity : AppCompatActivity() {
                     binding.titleTv.text = "${snapshot.child("title").value}"
                     binding.descTv.text = desc
                     binding.viewsTv.text = viewCount
-                    binding.downloadsTv.text = downloadCount
                     binding.dateTv.text = date
                 }
 

@@ -2,10 +2,16 @@ package com.example.readify.activity
 
 import android.app.AlertDialog
 import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.readify.databinding.ActivityPdfEditBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -22,6 +28,8 @@ class PdfEditActivity : AppCompatActivity() {
 
     //id sách lấy từ start intent AdapterPdfAdmin
     private var bookId = ""
+
+    private var pdfUri: Uri? = null
 
     //dialog tiến trình
     private lateinit var progressDialog: ProgressDialog
@@ -55,6 +63,11 @@ class PdfEditActivity : AppCompatActivity() {
         //xử lí chọn thể loại
         binding.categoryTv.setOnClickListener {
             categoryDialog()
+        }
+
+        //xử lí click pick pdf intent
+        binding.attachPdfBtn.setOnClickListener {
+            pdfPickIntent()
         }
 
         //xử lí nút submit
@@ -116,7 +129,9 @@ class PdfEditActivity : AppCompatActivity() {
             Toast.makeText(this, "Vui lòng nhập mô tả", Toast.LENGTH_SHORT).show()
         } else if (selectedCategoryId.isEmpty()) {
             Toast.makeText(this, "Vui lòng chọn thể loại", Toast.LENGTH_SHORT).show()
-        } else {
+        } else if (pdfUri == null) {
+            Toast.makeText(this, "Vui lòng chọn URI...", Toast.LENGTH_SHORT).show()}
+        else {
             updatePdf()
         }
 
@@ -194,8 +209,8 @@ class PdfEditActivity : AppCompatActivity() {
                 categoryTitleArrayList.clear()
 
                 for (ds in snapshot.children) {
-                    val id = "${ds.child(" id ").value}"
-                    val category = "${ds.child(" category ").value}"
+                    val id = "${ds.child("id").value}"
+                    val category = "${ds.child("category").value}"
 
                     categoryIdArrayList.add(id)
                     categoryTitleArrayList.add(category)
@@ -211,5 +226,45 @@ class PdfEditActivity : AppCompatActivity() {
 
             }
         })
+    }
+    private fun pdfPickIntent() {
+        Log.d(TAG, "pdfPickIntent: Starting pdf pick intent")
+
+        val intent = Intent()
+        intent.type = "application/pdf"
+        intent.action = Intent.ACTION_GET_CONTENT
+        pdfActivityResultLauncher.launch(intent)
+    }
+
+    val pdfActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+        ActivityResultCallback<ActivityResult> { result ->
+            if (result.resultCode == RESULT_OK) {
+                Log.d(TAG, "PDF Picked")
+                pdfUri = result.data!!.data
+                val fileName = getFileName(pdfUri)
+                binding.pdfTitle.setText("$fileName")
+            } else {
+                Log.d(TAG, "PDF Pick cancelled")
+                Toast.makeText(this, "Hủy bỏ", Toast.LENGTH_SHORT).show()
+            }
+        }
+    )
+
+    private fun getFileName(uri: Uri?): String? {
+        var result: String? = null
+        if (uri != null) {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.let {
+                if (it.moveToFirst()) {
+                    val columnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (columnIndex != -1) {
+                        result = it.getString(columnIndex)
+                    }
+                }
+                it.close()
+            }
+        }
+        return result
     }
 }

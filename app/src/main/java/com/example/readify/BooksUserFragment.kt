@@ -68,12 +68,6 @@ class BooksUserFragment : Fragment {
         if(category == "Tất cả"){
             //hiển thị tất cả sách
             loadAllBooks()
-        }else if(category == "Theo lượt xem"){
-            //hiển thị sách nhiều lượt xem nhất
-            loadMostViewedDownloadBooks("viewCount")
-        }else if (category == "Theo lượt tải"){
-            // hiển thị sách nhiều lượt tải nhất
-            loadMostViewedDownloadBooks("downloadCount")
         }else{
             //hiển thị thể loại được chọn
             loadCategorizedBooks()
@@ -127,30 +121,30 @@ class BooksUserFragment : Fragment {
         })
     }
 
-    private fun loadMostViewedDownloadBooks(orderBy: String) {
-        pdfArrayList = ArrayList()
-        val ref = FirebaseDatabase.getInstance().getReference("Book")
-        ref.orderByChild(orderBy).limitToLast(10) //hiển thị 10 sách xem hoặc tải nhiều nhất
-            .addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                //clear list truoc khi nhap du lieu
-                pdfArrayList.clear()
-                for(ds in snapshot.children){
-                    //get data
-                    val model = ds.getValue(ModelPdf::class.java)
-                    //them vao list
-                    pdfArrayList.add(model!!)
-                }
-
-                adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
-                binding.booksRv.adapter = adapterPdfUser
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
-    }
+//    private fun loadMostViewedDownloadBooks(orderBy: String) {
+//        pdfArrayList = ArrayList()
+//        val ref = FirebaseDatabase.getInstance().getReference("Book")
+//        ref.orderByChild(orderBy).limitToLast(10) //hiển thị 10 sách xem hoặc tải nhiều nhất
+//            .addValueEventListener(object : ValueEventListener{
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                //clear list truoc khi nhap du lieu
+//                pdfArrayList.clear()
+//                for(ds in snapshot.children){
+//                    //get data
+//                    val model = ds.getValue(ModelPdf::class.java)
+//                    //them vao list
+//                    pdfArrayList.add(model!!)
+//                }
+//
+//                adapterPdfUser = AdapterPdfUser(context!!, pdfArrayList)
+//                binding.booksRv.adapter = adapterPdfUser
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//
+//            }
+//        })
+//    }
 
     private fun loadCategorizedBooks() {
         pdfArrayList = ArrayList()

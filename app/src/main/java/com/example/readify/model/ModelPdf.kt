@@ -12,7 +12,6 @@ class ModelPdf {
     var url: String = ""
     var timestamp: Long = 0
     var viewCount: Long = 0
-    var downloadCount: Long = 0
     var isFavorite = false
 
     //constructor rỗng
@@ -28,7 +27,6 @@ class ModelPdf {
         url: String,
         timestamp: Long,
         viewCount: Long,
-        downloadCount: Long,
         isFavorite: Boolean
     ) {
         this.uid = uid
@@ -39,7 +37,6 @@ class ModelPdf {
         this.url = url
         this.timestamp = timestamp
         this.viewCount = viewCount
-        this.downloadCount = downloadCount
         this.isFavorite = isFavorite
     }
 

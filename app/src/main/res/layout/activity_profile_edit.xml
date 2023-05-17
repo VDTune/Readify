@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.ProfileEditActivity">
 
     <!--toolbar-->
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:id="@+id/toolbarRl"
-        android:background="@drawable/shape_toolbar01">
+        android:background="@drawable/logo_background_2">
 
         <!--nút back-->
         <ImageButton
@@ -28,6 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/toolbarTitleTv"
             android:text="Sửa Hồ Sơ"
+            android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -42,8 +44,8 @@
             android:layout_below="@+id/toolbarTitleTv"
             android:layout_marginTop="40dp"
             android:src="@drawable/ic_person_gray"
-            android:background="@color/white"
-            app:shapeAppearanceOverlay="@style/styleRoundedCornersImage"/>
+            android:background="@drawable/logo_background_6" />
+
     </RelativeLayout>
 
     <!---->
@@ -52,26 +54,27 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="225dp">
+        android:layout_marginTop="300dp">
         
         <!--sửa tên-->
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/background_1"
             android:id="@+id/nameTil"
-            app:hintEnabled="false">
+            android:textColorHint="@color/word_1">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/nameEt"
-                android:background="@drawable/shape_edittext01"
                 android:drawableStart="@drawable/ic_person_gray"
                 android:drawablePadding="10dp"
-                android:inputType="textPersonName|textCapWords"
-                android:textColor="@color/black"
-                android:textColorHint="@color/gray01"
+                android:drawableTint="@color/word_1"
+                android:textColor="@color/word_1"
                 android:hint="Tên"/>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <!--nut submit-->
@@ -84,6 +87,7 @@
             android:text="Cập nhật"
             android:background="@drawable/shape_button01"
             android:layout_marginTop="20dp"/>
+
     </RelativeLayout>
         
 </RelativeLayout>

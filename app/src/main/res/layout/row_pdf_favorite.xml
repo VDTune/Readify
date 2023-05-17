@@ -37,7 +37,7 @@
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="10dp"
             android:layout_toStartOf="@+id/removeFavoriteBtn"
             android:layout_toEndOf="@+id/pdfRl"
             android:ellipsize="end"
@@ -53,7 +53,7 @@
             android:background="@android:color/transparent"
             android:padding="5dp"
             android:src="@drawable/ic_favorite_white"
-            android:tint="@color/black" />
+            app:tint="@color/word_1" />
 
         <TextView
             android:id="@+id/descTv"
@@ -62,8 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/titleTv"
             android:layout_toEndOf="@id/pdfRl"
+            android:layout_marginStart="10dp"
             android:ellipsize="end"
             android:maxLines="4"
+            android:textColor="@color/black"
             android:text="Mô tả sách" />
 
         <!--the loai-->
@@ -74,7 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginEnd="5dp"
             android:maxLines="1"
+            android:textColor="@color/black"
             android:text="Thể loại" />
 
         <!--kích cỡ file-->
@@ -85,6 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_toEndOf="@id/pdfRl"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
             android:maxLines="1"
             android:text="100MB" />
 

@@ -36,6 +36,7 @@ class DashboardUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         firebaseAuth = FirebaseAuth.getInstance()
         checkUser()
 
@@ -46,7 +47,7 @@ class DashboardUserActivity : AppCompatActivity() {
         binding.logoutBtn.setOnClickListener {
             firebaseAuth.signOut()
             signOutGoogle()
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish()
             Toast.makeText(this, "Đăng xuất thành công", Toast.LENGTH_SHORT).show()
         }

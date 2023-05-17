@@ -12,6 +12,7 @@
         android:id="@+id/iconIv"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:background="@drawable/logo_background"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:src="@drawable/logo" />
@@ -21,27 +22,34 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iconIv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="50dp"
         android:text="Chào mừng bạn đến với ứng dụng"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="20sp" />
 
-    <Button
+    <TextView
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/skipBtn"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/shape_button01"
+        android:paddingVertical="10dp"
+        android:textSize="16sp"
+        android:gravity="center_horizontal"
+        android:background="@drawable/button_rectangle_1"
         android:text="Đăng nhập"
         android:textColor="@color/white" />
 
-    <Button
+    <TextView
         android:id="@+id/skipBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/shape_button02"
-        android:text="Bỏ qua Đăng Nhập"
-        android:textColor="@color/purple_500" />
+        android:background="@drawable/button_rectangle_2"
+        android:paddingVertical="10dp"
+        android:textSize="16sp"
+        android:gravity="center_horizontal"
+        android:text="Bỏ qua đăng nhập"
+        android:textColor="@color/word_1" />
+
 </RelativeLayout>

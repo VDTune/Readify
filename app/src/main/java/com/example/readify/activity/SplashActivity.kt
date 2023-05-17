@@ -16,6 +16,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_plash)
+
         firebaseAuth = FirebaseAuth.getInstance()
 
         Handler().postDelayed(Runnable {
@@ -26,11 +27,7 @@ class SplashActivity : AppCompatActivity() {
     private fun checkUser() {
         //lấy người dùng hiện tại (đăng nhập hay chưa)
         val firebaseUser = firebaseAuth.currentUser
-        if (firebaseUser == null) {
-            //chưa đăng nhập, dẫn để mfn hình chính
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else {
+        if (firebaseUser != null) {
             //đã đăng nhâp
             val ref = FirebaseDatabase.getInstance().getReference("Users")
             ref.child(firebaseUser.uid)
@@ -62,6 +59,12 @@ class SplashActivity : AppCompatActivity() {
 
                     }
                 })
+
+
+        } else {
+            //chưa đăng nhập, dẫn để mfn hình chính
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 }

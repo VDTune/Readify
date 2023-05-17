@@ -12,7 +12,7 @@
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar02">
+        android:background="@drawable/logo_background_3">
 
         <!--btn back-->
         <ImageButton
@@ -49,26 +49,36 @@
     </RelativeLayout>
 
     <!--Tìm kiếm-->
-    <EditText
-        android:id="@+id/searchEt"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchTil"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxStrokeColor="@color/background_1"
         android:layout_below="@+id/toolbarRl"
         android:layout_marginStart="10dp"
+        android:textColorHint="@color/word_1"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:drawableStart="@drawable/ic_search_gray"
-        android:drawablePadding="10dp"
-        android:hint="Tìm sách..."
-        android:padding="10dp"
-        android:textColor="@color/black" />
+        android:layout_marginEnd="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search_gray"
+            android:drawableTint="@color/word_1"
+            android:drawablePadding="10dp"
+            android:hint="Tìm sách"
+            android:textColor="@color/word_1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!--list sách pdf-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bookRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/searchEt"
+        android:layout_below="@+id/searchTil"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"

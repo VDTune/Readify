@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +13,9 @@
         android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@drawable/shape_toolbar02">
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/logo_background_3">
         
         <!--Hiển thị profile-->
         <ImageButton
@@ -55,65 +58,91 @@
     </RelativeLayout>
 
     <!--Tìm kiếm-->
-    <EditText
-        android:id="@+id/searchEt"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/searchTil"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbarRl"
+        app:boxStrokeColor="@color/background_1"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbarRl"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:textColorHint="@color/word_1"
         android:layout_marginEnd="10dp"
-        android:background="@color/white"
-        android:drawableStart="@drawable/ic_category_search_gray"
-        android:hint="Tìm thể loại..."
-        android:padding="10dp"
-        android:textColor="@color/black" />
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchEt"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:drawableStart="@drawable/ic_category_search_gray"
+            android:drawableTint="@color/background_1"
+            android:hint="Tìm thể loại"
+            android:padding="10dp"
+            android:textColor="@color/word_1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!--Thể loại-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoryRv"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/listCategory"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomLl"
-        android:layout_below="@+id/searchEt"
-        android:layout_margin="5dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_category" />
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.75"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ScrollView
+            android:id="@+id/scroolView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/categoryRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="60dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/row_category" />
+
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/addPdfFab"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_pdf_white"
+            android:background="@drawable/logo_background"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--Bottom Layout-->
-    <LinearLayout
-        android:id="@+id/bottomLl"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addCategoryBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/listCategory"
+        android:background="@drawable/button_rectangle_1"
+        android:paddingVertical="10dp"
+        android:layout_margin="10dp">
 
-        <!--thêm thể loại-->
-        <Button
-            android:id="@+id/addCategoryBtn"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/shape_button01"
-            android:minHeight="50dp"
             android:text="+ Thêm thể loại"
-            android:textAllCaps="false"
-            android:textColor="@color/white" />
-
-        <!--Thêm file pdf-->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addPdfFab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_500"
-            android:src="@drawable/ic_pdf_white"
-            app:fabCustomSize="50dp"
-            app:tint="@color/white" />
-
-    </LinearLayout>
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
-</RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +9,26 @@
     tools:context=".BooksUserFragment">
 
     <!--tim kime-->
-    <EditText
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchEt"
-        android:background="@color/white"
-        android:layout_margin="10dp"
-        android:drawableStart="@drawable/ic_search_gray"
-        android:hint="Tìm Sách..."
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/gray01"/>
+        android:textColorHint="@color/word_1"
+        app:boxStrokeColor="@color/background_1"
+        android:layout_margin="10dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/searchEt"
+            android:drawableTint="@color/word_1"
+            android:hint="Tìm Sách"
+            android:drawableStart="@drawable/ic_search_gray"
+            android:padding="10dp"
+            android:textColor="@color/word_1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!--recyclerview-->
     <androidx.recyclerview.widget.RecyclerView

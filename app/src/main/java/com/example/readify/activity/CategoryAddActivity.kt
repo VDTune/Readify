@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.readify.databinding.ActivityCategoryAddBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class CategoryAddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategoryAddBinding
@@ -70,23 +73,39 @@ class CategoryAddActivity : AppCompatActivity() {
 
         //Thêm vào firebase db: Database Root > Category > categoryId > category info
         val ref = FirebaseDatabase.getInstance().getReference("Category")
-        ref.child("$timestamp")
-            .setValue(hashMap)
-            .addOnSuccessListener {
-                //Thêm thể loại thành công
-                progressDialog.dismiss()
-                Toast.makeText(this, "Thêm thể loại ${category} thành công!", Toast.LENGTH_SHORT)
-                    .show()
-                binding.categoryEt.setText("")
-//                startActivity(Intent(this,DashboardAdminActivity::class.java))
+        // Kiểm tra nếu thể loại đã tồn tại
+        ref.orderByChild("category").equalTo(category).addListenerForSingleValueEvent(object :
+            ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    // Thể loại đã tồn tại
+                    progressDialog.dismiss()
+                    Toast.makeText(this@CategoryAddActivity, "Thể loại $category đã tồn tại!", Toast.LENGTH_SHORT).show()
+                } else {
+                    // Thêm thể loại mới
+                    ref.child("$timestamp")
+                        .setValue(hashMap)
+                        .addOnSuccessListener {
+                            // Thêm thể loại thành công
+                            progressDialog.dismiss()
+                            Toast.makeText(this@CategoryAddActivity, "Thêm thể loại $category thành công!", Toast.LENGTH_SHORT).show()
+                            binding.categoryEt.setText("")
+//                        startActivity(Intent(this@YourActivity, DashboardAdminActivity::class.java))
+                        }
+                        .addOnFailureListener { e ->
+                            // Thêm thất bại
+                            progressDialog.dismiss()
+                            Toast.makeText(this@CategoryAddActivity, "Thêm thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
-            .addOnFailureListener { e ->
-                //thêm thất bại
-                progressDialog.dismiss()
-                Toast.makeText(this, "Thêm thất bại... Lỗi: ${e.message}", Toast.LENGTH_SHORT)
-                    .show()
 
+            override fun onCancelled(error: DatabaseError) {
+                // Xử lý khi có lỗi xảy ra
+                progressDialog.dismiss()
+                Toast.makeText(this@CategoryAddActivity, "Đã xảy ra lỗi: ${error.message}", Toast.LENGTH_SHORT).show()
             }
+        })
 
     }
 }

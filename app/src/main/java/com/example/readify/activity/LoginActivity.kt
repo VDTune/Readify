@@ -77,6 +77,11 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
+//        nút back
+        binding.backBtn.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
     private var email = ""

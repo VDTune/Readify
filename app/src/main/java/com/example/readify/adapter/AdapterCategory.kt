@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.readify.R
+import com.example.readify.activity.CategoryUpdateActivity
 import com.example.readify.filter.FilterCategory
 import com.example.readify.model.ModelCategory
 import com.example.readify.activity.PdfListAdminActivity
@@ -69,6 +71,13 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
                 .show()
         }
 
+        holder.updateBtn.setOnClickListener {
+            val intent = Intent(context, CategoryUpdateActivity::class.java)
+            intent.putExtra("categoryId", id)
+            intent.putExtra("category", category)
+            context.startActivity(intent)
+        }
+
         //xử lí click, chạy pdf list admin activity
         holder.itemView.setOnClickListener {
             val intent = Intent(context, PdfListAdminActivity::class.java)
@@ -97,6 +106,7 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
         //khởi tạo giao diện người dùng
         var categoryTv: TextView = binding.categoryTv
         var deleteBtn: ImageButton = binding.deleteBtn
+        var updateBtn: ImageView = binding.updateBtn
     }
 
     override fun getFilter(): Filter {

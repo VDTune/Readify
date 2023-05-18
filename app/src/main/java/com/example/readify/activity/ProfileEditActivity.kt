@@ -81,7 +81,7 @@ class ProfileEditActivity : AppCompatActivity() {
         else{
             if(imageUri == null){
                 //cập nhật không cần ảnh
-                updateProfile("")
+                updateProfile("",name)
 
             }else{
                 //cập nhật cùng ảnh
@@ -93,6 +93,8 @@ class ProfileEditActivity : AppCompatActivity() {
     private fun uploadImage() {
         progressDialog.setMessage("Tải lên ảnh...")
         progressDialog.show()
+
+        name = binding.nameEt.text.toString().trim()
 
         //đường dẫn và tên ảnh
         val filePathAndName = "ProfileImage/"+firebaseAuth.uid
@@ -106,7 +108,7 @@ class ProfileEditActivity : AppCompatActivity() {
                 while(!uriTask.isSuccessful);
                 val uploadedImageUrl = "${uriTask.result}"
 
-                updateProfile(uploadedImageUrl)
+                updateProfile(uploadedImageUrl, name)
 
             }
             .addOnFailureListener{e ->
@@ -115,7 +117,7 @@ class ProfileEditActivity : AppCompatActivity() {
             }
     }
 
-    private fun updateProfile(uploadedImageUrl: String) {
+    private fun updateProfile(uploadedImageUrl: String, name : String) {
         progressDialog.setMessage("Cập nhật hồ sơ...")
 
         //setup thông tin cho db
@@ -125,18 +127,34 @@ class ProfileEditActivity : AppCompatActivity() {
             hashMap["profileImage"] = uploadedImageUrl
         }
 
-        //cập nhật dữ liệu vào db
-        val reference = FirebaseDatabase.getInstance().getReference("Users")
-        reference.child(firebaseAuth.uid!!)
-            .updateChildren(hashMap)
-            .addOnSuccessListener {
-                progressDialog.dismiss()
-                Toast.makeText(this, "Cập nhật thành công!",Toast.LENGTH_SHORT).show()
+
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    progressDialog.dismiss()
+                    Toast.makeText(this@ProfileEditActivity, "Tên người dùng đã tồn tại", Toast.LENGTH_SHORT).show()
+                } else {
+                    //cập nhật dữ liệu vào db
+                    val reference = FirebaseDatabase.getInstance().getReference("Users")
+                    reference.child(firebaseAuth.uid!!)
+                        .updateChildren(hashMap)
+                        .addOnSuccessListener {
+                            progressDialog.dismiss()
+                            Toast.makeText(this@ProfileEditActivity, "Cập nhật thành công!",Toast.LENGTH_SHORT).show()
+                            onBackPressed()
+                        }
+                        .addOnFailureListener {e ->
+                            progressDialog.dismiss()
+                            Toast.makeText(this@ProfileEditActivity, "Cập nhật thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
-            .addOnFailureListener {e ->
-                progressDialog.dismiss()
-                Toast.makeText(this, "Cập nhật thất bại... Lỗi: ${e.message}",Toast.LENGTH_SHORT).show()
+
+            override fun onCancelled(error: DatabaseError) {
+
             }
+        })
     }
 
     private fun loadUserInfo() {

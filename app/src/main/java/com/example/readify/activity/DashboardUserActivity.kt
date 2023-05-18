@@ -19,6 +19,7 @@ import com.example.readify.model.ModelCategory
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -29,6 +30,7 @@ class DashboardUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardUserBinding
 
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseUser: FirebaseUser
 
     private lateinit var categoryArrayList: ArrayList<ModelCategory>
     private lateinit var viewPagerAdapter: ViewPagerAdapter
@@ -38,6 +40,8 @@ class DashboardUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
+
+        firebaseUser = firebaseAuth.currentUser!!
         checkUser()
 
         setupWithViewPagerAdapter(binding.viewPager)
@@ -54,7 +58,8 @@ class DashboardUserActivity : AppCompatActivity() {
 
         //xử lí nút hiển thị profile
         binding.profileBtn.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
         }
 
         //nút chuyển tới đăng nhập khi chưa có tài khoản

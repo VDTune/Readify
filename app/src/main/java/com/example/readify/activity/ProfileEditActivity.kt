@@ -21,6 +21,7 @@ import com.example.readify.R
 import com.example.readify.databinding.ActivityProfileEditBinding
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -34,6 +35,7 @@ class ProfileEditActivity : AppCompatActivity() {
 
     //firebase auth
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseUser: FirebaseUser
 
     //uri của ảnh
     private var imageUri:Uri ?= null
@@ -73,31 +75,6 @@ class ProfileEditActivity : AppCompatActivity() {
     private fun validateData() {
         //lay du lieu
         name = binding.nameEt.text.toString().trim()
-//
-//        val ref = FirebaseDatabase.getInstance().getReference("Users")
-//        val categoryRef = ref.child(uid)
-//
-//        // Kiểm tra tên thể loại đã tồn tại hay chưa
-//        ref.orderByChild("category").equalTo(updatedCategory)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
-//                override fun onDataChange(snapshot: DataSnapshot) {
-//                    if (snapshot.exists()) {
-//                        // Tên thể loại đã tồn tại
-//                        Toast.makeText(this@CategoryUpdateActivity, "Tên thể loại đã tồn tại", Toast.LENGTH_SHORT).show()
-//                    } else {
-//                        // Tên thể loại không tồn tại, tiến hành cập nhật
-//                        categoryRef.child("category").setValue(updatedCategory)
-//                            .addOnSuccessListener {
-//                                // Cập nhật thành công
-//                                Toast.makeText(this@CategoryUpdateActivity, "Sửa thành công", Toast.LENGTH_SHORT).show()
-//                                onBackPressed()
-//                            }
-//                            .addOnFailureListener { error ->
-//                                // Xử lý khi cập nhật thất bại
-//                            }
-//                    }
-//                }
-
         if(name.isEmpty()){
             Toast.makeText(this, "Vui lòng nhập tên", Toast.LENGTH_SHORT).show()
         }

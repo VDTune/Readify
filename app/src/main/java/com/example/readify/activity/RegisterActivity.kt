@@ -65,6 +65,8 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "Email không hợp lệ...", Toast.LENGTH_SHORT).show()
         } else if (password.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập mật khẩu...", Toast.LENGTH_SHORT).show()
+        }else if (password.length < 6) {
+            Toast.makeText(this, "Mật khẩu phải có hơn 6 kí tự...", Toast.LENGTH_SHORT).show()
         } else if (cPassword.isEmpty()) {
             Toast.makeText(this, "Vui lòng xác nhận mật khẩu...", Toast.LENGTH_SHORT).show()
         } else if (password != cPassword) {

@@ -8,7 +8,10 @@ import android.util.Patterns
 import android.widget.Toast
 import com.example.readify.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -67,28 +70,58 @@ class RegisterActivity : AppCompatActivity() {
         } else if (password != cPassword) {
             Toast.makeText(this, "Mật khẩu không trùng...", Toast.LENGTH_SHORT).show()
         } else {
-            createUserAccount()
+            createUserAccount(name, email)
         }
     }
 
-    private fun createUserAccount() {
+    private fun createUserAccount(name : String, email : String) {
         //Tạo tài khoản
         progressDialog.setMessage("Tạo tài khoản...")
         progressDialog.show()
 
         //tạo người dùng trong firebase auth
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                //thành công, thêm thông tin người dùng vào db
-                updateUserInfo()
+        val ref = FirebaseDatabase.getInstance().getReference("Users")
+        ref.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                //check tên người dùng đã tồn tại hay chưa
+                if (snapshot.exists()) {
+                    progressDialog.dismiss()
+                    Toast.makeText(this@RegisterActivity, "Tên người dùng đã tồn tại", Toast.LENGTH_SHORT).show()
+                } else {
+                    val ref1 = FirebaseDatabase.getInstance().getReference("Users")
+                    ref1.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            //check email đã tồn tại hay chưa
+                            if (snapshot.exists()) {
+                                progressDialog.dismiss()
+                                Toast.makeText(this@RegisterActivity, "Email người dùng đã tồn tại", Toast.LENGTH_SHORT).show()
+                            } else {
+                                //tạo người dùng trong firebase auth
+                                firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                    .addOnSuccessListener {
+                                        //thành công, thêm thông tin người dùng vào db
+                                        updateUserInfo()
 
-                Toast.makeText(this, "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@RegisterActivity, "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        //thất bại
+                                        progressDialog.dismiss()
+                                        Toast.makeText(this@RegisterActivity, "Thất bại... \n Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                            }
+
+                        }
+                        override fun onCancelled(error1: DatabaseError) {
+                            // Xử lý khi có lỗi xảy ra
+                        }
+                    })
+                }
             }
-            .addOnFailureListener { e ->
-                //thất bại
-                progressDialog.dismiss()
-                Toast.makeText(this, "Thất bại... \n Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+            override fun onCancelled(error: DatabaseError) {
+                // Xử lý khi có lỗi xảy ra
             }
+        })
     }
 
     private fun updateUserInfo() {

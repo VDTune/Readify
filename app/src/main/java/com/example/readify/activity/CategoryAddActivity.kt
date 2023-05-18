@@ -74,8 +74,7 @@ class CategoryAddActivity : AppCompatActivity() {
         //Thêm vào firebase db: Database Root > Category > categoryId > category info
         val ref = FirebaseDatabase.getInstance().getReference("Category")
         // Kiểm tra nếu thể loại đã tồn tại
-        ref.orderByChild("category").equalTo(category).addListenerForSingleValueEvent(object :
-            ValueEventListener {
+        ref.orderByChild("category").equalTo(category).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     // Thể loại đã tồn tại

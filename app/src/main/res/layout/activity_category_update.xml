@@ -39,7 +39,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="Thêm thể loại"
+            android:text="Sửa thể loại"
             android:textColor="@color/white"
             android:textSize="28sp" />
     </RelativeLayout>
@@ -79,7 +79,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape_button01"
-        android:text="Thêm"
+        android:text="Sửa"
         android:textColor="@color/white" />
 
 

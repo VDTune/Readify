@@ -1,5 +1,6 @@
 package com.example.readify.adapter
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -84,6 +85,7 @@ class AdapterCategory : RecyclerView.Adapter<AdapterCategory.HolderCategory>, Fi
             intent.putExtra("categoryId", id)
             intent.putExtra("category", category)
             context.startActivity(intent)
+            (context as Activity).finish() // Thêm dòng này để kết thúc Activity hiện tại
         }
     }
 

@@ -79,7 +79,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape_button01"
-        android:text="Sửa"
+        android:text="Cập nhật"
         android:textColor="@color/white" />
 
 

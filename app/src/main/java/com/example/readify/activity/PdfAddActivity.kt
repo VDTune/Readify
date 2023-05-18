@@ -36,8 +36,7 @@ class PdfAddActivity : AppCompatActivity() {
     //arraylist chứa các thể loại
     private lateinit var categoryArrayList: ArrayList<ModelCategory>
 
-    //uri pdf
-    private var pdfUri: Uri? = null
+
 
     //tag
     private val TAG = "PDF_ADD_TAG"
@@ -86,6 +85,8 @@ class PdfAddActivity : AppCompatActivity() {
     private var title = ""
     private var desc = ""
     private var category = ""
+    //uri pdf
+    private var pdfUri: Uri? = null
 
     private fun validateData() {
         /*1. xác thực dữ liệu */
@@ -95,6 +96,8 @@ class PdfAddActivity : AppCompatActivity() {
         title = binding.titleEt.text.toString().trim()
         desc = binding.descEt.text.toString().trim()
         category = binding.categoryTv.text.toString().trim()
+
+
 
         //xác thực
         if (title.isEmpty()) {
@@ -123,7 +126,7 @@ class PdfAddActivity : AppCompatActivity() {
         val timestamp = System.currentTimeMillis()
 
         //địa chỉ file pdf trong firebase storage
-        val filePathAndName = "Books/$timestamp"
+        val filePathAndName = "Book/$timestamp"
 
         //tham chiếu lưu trữ
         val storageReference = FirebaseStorage.getInstance().getReference(filePathAndName)
@@ -218,7 +221,7 @@ class PdfAddActivity : AppCompatActivity() {
     private fun categoryPickDialog() {
         Log.d(TAG, "categoryPickDialog: Showing pdf category pick dialog")
 
-        //lấy mảng chuỗi thể loại từ arraylist
+        //lấy mảng thể loại từ arraylist
         val categoryArray = arrayOfNulls<String>(categoryArrayList.size)
         for (i in categoryArrayList.indices) {
             categoryArray[i] = categoryArrayList[i].category

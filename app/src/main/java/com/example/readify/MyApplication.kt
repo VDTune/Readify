@@ -211,7 +211,7 @@ class MyApplication : Application() {
                 })
         }
 
-        public fun removeFromFavorite(context: Context, bookId: String){
+        public fun removeFromFavorite(context: Context, bookId: String) {
             val TAG = "REMOVE_FAV_TAG"
             Log.d(TAG, "removeFromFavorite: bỏ thích")
 
@@ -224,9 +224,10 @@ class MyApplication : Application() {
                 .addOnSuccessListener {
                     Log.d(TAG, "removeFromFavorite: Bỏ thích thành công!")
                 }
-                .addOnFailureListener {e ->
+                .addOnFailureListener { e ->
                     Log.d(TAG, "removeFromFavorite: Bỏ thích thất bại...Lỗi: ${e.message}")
-                    Toast.makeText(context, "Lỗi bỏ thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Lỗi bỏ thích... Lỗi: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
                 }
         }
     }

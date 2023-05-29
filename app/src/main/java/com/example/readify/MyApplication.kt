@@ -50,7 +50,7 @@ class MyApplication : Application() {
                     Log.d(TAG, "loadPdfSize: Size Bytes $bytes")
 
                     val kb = bytes / 1024
-                    val mb = kb / 10224
+                    val mb = kb / 1024
                     if (mb >= 1) {
                         sizeTv.text = "${String.format("%.2f", mb)} MB"
                     } else if (kb >= 1) {

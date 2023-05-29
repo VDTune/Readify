@@ -22,7 +22,7 @@ class FilterPdfAdmin : Filter {
 
         //các giá trị tìm kiếm không được null và rỗng
         if (constraint != null && constraint.isNotEmpty()) {
-            // chuyển thành lowercase để tránh phân biệt chữ hoa chứ thường
+            // chuyển thành uppercase để tránh phân biệt chữ hoa chứ thường
             constraint = constraint.toString().uppercase()
             val filteredModel: ArrayList<ModelPdf> = ArrayList()
 
